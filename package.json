@@ -5,7 +5,8 @@
   "main": "index.html",
   "scripts": {
     "build": "node src/listEx.js && cp dist/examples.json . && ln -s dist/examples examples",
-    "dist": "make"
+    "dist": "make",
+    "publish": "make publish"
   },
   "repository": {
     "type": "git",

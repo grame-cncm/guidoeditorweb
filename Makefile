@@ -29,6 +29,13 @@ dist/css/codemirror.min.css : $(CMFILES)
 dist/css/bootstrap.min.css : node_modules/bootstrap/dist/css/bootstrap.min.css
 	cp $<  $@ 
 
+publish:
+	git checkout master 
+	git merge dev
+	git push
+	git checkout gh-pages
+	
+
 	
 clean :
 	rm $(OUT)
