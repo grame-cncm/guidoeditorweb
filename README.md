@@ -1,5 +1,7 @@
 # Guido Editor Web
 
+The Guido Editor Web is based on the [Guido library](http://guidolib.sf.net/), is a portable library and API for the graphical rendering of musical scores. 
+
 
 ## Features
 
@@ -34,12 +36,14 @@ Install dev dependencies:
 npm install
 ~~~~~~
 
-To build everything (using Webpack 4, Babel 7, TypeScript), this will produce `dist/index.js`
+To build everything (actually `dist/example.json`): 
 ~~~~~~
 npm run build
 ~~~~~~
 
 To test, put the directory in a local server, then open page: `index-dev.html`
+
+Note that you can disable CORS security on Firefox and test without server: go to the `about:config` page and set  `security.fileuri.strict_origin_policy` to false.
 
 
 
