@@ -1,0 +1,63 @@
+
+
+.spacing 	{ grid-area: spacing; }
+.syslayout 	{ grid-area: syslayout; }
+.pagelayout { grid-area: pagelayout; }
+.scorecolor { grid-area: scorecolor;}
+/*.mapping 	{ grid-area: mapping;}*/
+.hideelts 	{ grid-area: hideelts;}
+.pages 		{ grid-area: pages;}
+
+input:disabled {
+  background: #f0f0f0;
+}
+
+.settings-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-areas:
+    'spacing spacing'
+    'syslayout syslayout'
+    'pagelayout scorecolor'
+/*    'mapping mapping'*/
+    'hideelts hideelts'
+    'pages pages';
+  grid-gap: 1px;
+  padding: 1px;
+}
+
+.settings-container > div {
+  background-color: #eeeeee;
+  text-align: left;
+}
+
+.settings-header {
+  text-align: left;
+  font-size: 16px;
+  color: #0000aa
+}
+
+.settings-table  { width: 100%; border: 5px }
+.settings-left 	 { width: 30% }
+.settings-slider { width: 50% }
+.settings-num 	 { width: 20% }
+.settings-spin 	 { width: 80px }
+
+.somepages 	 { 
+	padding-left: 50px; 
+	color: #888888
+}
+
+.hidecol 	{ width: 33%; }
+.mapcol 	{ width: 33%; padding-bottom: 10px; }
+.mapwhat 	{ width: 33%; 
+	background-color: #eeeeee; 
+	padding-left: 10px;
+}
+
+.settings-btn { 
+ -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+}
+.settings-btn:hover {background-color: #dddddd;}
+
