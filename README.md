@@ -1,6 +1,6 @@
 # Guido Editor Web
 
-The Guido Editor Web is based on the [Guido library](http://guidolib.sf.net/), is a portable library and API for the graphical rendering of musical scores. 
+The [Guido Editor Web](https://grame-cncm.github.io/guidoeditorweb/) is based on the [Guido library](http://guidolib.sf.net/), is a portable library and API for the graphical rendering of musical scores.
 
 
 ## Features
