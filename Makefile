@@ -9,7 +9,7 @@ JSFILES  := $(SRC:%=src/%)
 CSSFILES := $(CSS:%=css/%)
 EXTFILES := node_modules/jquery/dist/jquery.js node_modules/bootstrap/dist/js/bootstrap.js node_modules/codemirror/lib/codemirror.js
 LIBOUT   := index.min.js extern.min.js
-CSSOUT   := guidoeditor.min.css codemirror.min.css bootstrap.min.css print.css
+CSSOUT   := guidoeditor.min.css codemirror.min.css bootstrap.min.css
 OUT      := $(LIBOUT:%=dist/lib/%) $(CSSOUT:%=dist/css/%)
 
 all:  $(OUT) 
@@ -27,9 +27,6 @@ dist/css/codemirror.min.css : $(CMFILES)
 	node node_modules/.bin/minify $(CMFILES) > $@ || (rm $@s ; false)
 
 dist/css/bootstrap.min.css : node_modules/bootstrap/dist/css/bootstrap.min.css
-	cp $<  $@ 
-
-dist/css/print.css : css/print.css
 	cp $<  $@ 
 
 	
