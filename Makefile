@@ -28,18 +28,6 @@ dist/css/codemirror.min.css : $(CMFILES)
 
 dist/css/bootstrap.min.css : node_modules/bootstrap/dist/css/bootstrap.min.css
 	cp $<  $@ 
-
-publish:
-	cd dist && tar czf ../dist.tgz *
-	git checkout master 
-	git merge dev
-	git push
-	git checkout gh-pages
-	tar xzf dist.tgz
-	git commit -m "auto publish" .
-	git push
-	git checkout dev
-
 	
 clean :
 	rm $(OUT)
