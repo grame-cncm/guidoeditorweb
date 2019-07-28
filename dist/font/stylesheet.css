@@ -4,8 +4,8 @@
 
 @font-face {
     font-family: 'Guido2';
-    src: url('font/guido2-webfont.woff2') format('woff2'),
-         url('font/guido2-webfont.woff') format('woff');
+    src: url('guido2-webfont.woff2') format('woff2'),
+         url('guido2-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 
