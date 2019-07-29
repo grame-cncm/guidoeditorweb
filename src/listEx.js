@@ -1,7 +1,7 @@
 /* eslint-disable */
 const fs = require("fs");
 const path = require("path");
-// const entry = "examples";
+const entry = "examples";
 const dirTree = require("directory-tree");
 const filteredTree = dirTree("examples", { extensions: /\.gmn/, normalizePath: true });
-fs.writeFileSync("dist/examples.json", JSON.stringify(filteredTree));
+fs.writeFileSync("examples.json", JSON.stringify(filteredTree));
