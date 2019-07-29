@@ -143,7 +143,7 @@ class GuidoSettings {
 		$("#maxdist-num").keyup			( (event) => { this.settings.systemsDistribLimit = this.moveLinked ("#maxdist-num", 100, "#maxdist-slider"); this.refresh(); });
 		$("#maxdist-num").click			( (event) => { this.settings.systemsDistribLimit = this.moveLinked ("#maxdist-num", 100, "#maxdist-slider"); this.refresh(); });
 
-		$("#sys-dist").click			( (event) => { this.settings.systemsDistribution = $("#sys-dist :selected").index() + 1; this.refresh(); });
+		$("#sys-dist").change			( (event) => { this.settings.systemsDistribution = $("#sys-dist :selected").index() + 1; this.refresh(); });
 
 		$("#optpagefill").click			( (event) => { this.settings.optimalPageFill 		= $("#optpagefill").is(":checked") ? 1 : 0; this.refresh(); });
 		$("#neighborhood").click		( (event) => { this.settings.neighborhoodSpacing 	= $("#neighborhood").is(":checked") ? 1 : 0; this.refresh(); });

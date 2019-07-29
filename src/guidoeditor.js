@@ -55,10 +55,10 @@ class GuidoEditor {
 					this.drop (filelist[i]);
 			}
 		});
-		$("#font-family").click ( (event) => { this.fEditor.getWrapperElement().style["font-family"] =  $("#font-family").val(); } ); 
-		$("#font-size").click 	( (event) => { this.fEditor.getWrapperElement().style["font-size"] =  $("#font-size").val() + "px"; } ); 
-		$("#etheme").click 		( (event) => { this.fEditor.setOption("theme", $("#etheme").val()); } );
-		$("#wraplines").click 	( (event) => { this.fEditor.setOption("lineWrapping",  $("#wraplines").is(":checked")); } );
+		$("#font-family").change 	( (event) => { this.fEditor.getWrapperElement().style["font-family"] =  $("#font-family").val(); } ); 
+		$("#font-size").change 		( (event) => { this.fEditor.getWrapperElement().style["font-size"] =  $("#font-size").val() + "px"; console.log("font change"); } ); 
+		$("#etheme").change 		( (event) => { this.fEditor.setOption("theme", $("#etheme").val()); } );
+		$("#wraplines").change 		( (event) => { this.fEditor.setOption("lineWrapping",  $("#wraplines").is(":checked")); } );
 
 		this.fEditor.getWrapperElement().style["font-family"] =  $("#font-family").val();
 		this.fEditor.getWrapperElement().style["font-size"] =  $("#font-size").val() + "px"; 
@@ -241,11 +241,9 @@ class GuidoCompiler {
 		to = Math.min (to, this.pageCount);
 		this.fDrawTime = 0;
 		$("#score").html("");
-		var embed = true;
 		for (var i = from; i <= to; i++) {
-			$('<div class="page well">'+this.svg(i, embed)+'</div>').appendTo('#score');
+			$('<div class="page well">'+this.svg(i)+'</div>').appendTo('#score');
 			this.fDrawTime += this.fEngine.getOnDrawTime(this.fGR);
-			embed = false; // embed font only once
 		}
 		this.showTime();
 		this.fEditor.resize ($("#score").height());
@@ -333,7 +331,8 @@ class GuidoCompiler {
 		return str.replace(/\.gmn$/, "");
 	}
 	get html () { 
-		var str = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8"></head>\n';
+		var str = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8">\n';
+		str += '<link rel="stylesheet" href="http://guidoeditor.grame.fr/font/stylesheet.css" type="text/css" /></head>\n';
 		str += '<style>\n.page { margin: 20px; padding: 20px; background-color: #efefef;}\n.well { border-radius: 10px; }\n</style>\n'; 
 		str += '<body><div>\n';
 		str +=  $("#score").html();
