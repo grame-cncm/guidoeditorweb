@@ -12,6 +12,8 @@ LIBOUT   := index.min.js extern.min.js
 CSSOUT   := guidoeditor.min.css codemirror.min.css bootstrap.min.css
 OUT      := $(LIBOUT:%=dist/lib/%) $(CSSOUT:%=dist/css/%)
 
+.PHONY: examples
+
 all:  $(OUT) 
 
 dist/lib/extern.min.js : $(EXTFILES)
@@ -27,7 +29,12 @@ dist/css/codemirror.min.css : $(CMFILES)
 	node node_modules/.bin/minify $(CMFILES) > $@ || (rm $@s ; false)
 
 dist/css/bootstrap.min.css : node_modules/bootstrap/dist/css/bootstrap.min.css
-	cp $<  $@ 
+	cp node_modules/bootstrap/dist/css/bootstrap.min.css* dist/css/ 
+
+
+examples:
+	cd dist && node ../src/listEx.js
+
 	
 clean :
 	rm $(OUT)

@@ -4,7 +4,7 @@
   "description": "Guido Editor",
   "main": "index.html",
   "scripts": {
-    "build": "node src/listEx.js && cp dist/examples.json . && ln -s dist/examples examples",
+    "build": "make examples",
     "dist": "make"
   },
   "repository": {
