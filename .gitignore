@@ -4,7 +4,6 @@ dist/css/guidoeditor.min.css
 
 dist/lib/extern.min.js
 dist/lib/index.min.js
-examples.json
 node_modules
 
 .DS_Store
