@@ -287,7 +287,7 @@ class GuidoCompiler {
 
 	process(gmn) {
 		if ( !gmn || !gmn.trim()) { 
-			clear(); 
+			this.clear(); 
 			return;
 		}
 
