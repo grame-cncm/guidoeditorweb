@@ -20,7 +20,6 @@ function download (filename, text) {
 //----------------------------------------------------------------------------
 class GuidoEditor {
 	
-
 	constructor (divID, compiler) {
 		this.fEditor = CodeMirror.fromTextArea (document.getElementById (divID), {
 			lineNumbers: true,
@@ -304,6 +303,26 @@ class GuidoCompiler {
 		}
 	}
 
+	scanUrl() {
+		var arg = window.location.search.substring(1);
+		var n = arg.search("="); console.log("n=" +n);
+		if (n >= 0) { 
+			var name  = arg.substr(0,n);
+			var value = arg.substr(n+1);
+			switch (name) {
+				case "code":
+					this.fEditor.setGmn(atob(value), "");
+					break;
+				case "src":
+					var oReq = new XMLHttpRequest();
+					oReq.onload = () => { this.fEditor.setGmn( oReq.responseText, ""); };
+					oReq.open("get", value, true);
+					oReq.send();					
+					break;
+			}
+		}
+	}
+
 	initialize(compiler) {
 		var module = GuidoModule();
 		module['onRuntimeInitialized'] = () => {
@@ -320,6 +339,7 @@ class GuidoCompiler {
 			this.fEditor = new GuidoEditor ("code", this);
 			var settings = new GuidoSettings (this);
 			this.fColor = settings.color;
+			this.scanUrl();
  			this.process (this.fEditor.value);
 		}
 	}
