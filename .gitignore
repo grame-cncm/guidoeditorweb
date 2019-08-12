@@ -7,3 +7,5 @@ dist/lib/index.min.js
 node_modules
 
 .DS_Store
+
+dist/lib/debug
