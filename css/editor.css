@@ -24,6 +24,8 @@ html, body {
 
 .CodeMirror {
     height: auto;
+    resize: vertical;
+    overflow: auto;
 /* 
     min-height: 800px;
     max-height: calc(100vh - 115px);
