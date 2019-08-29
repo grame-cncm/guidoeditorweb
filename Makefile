@@ -11,10 +11,12 @@ EXTFILES := node_modules/jquery/dist/jquery.js node_modules/bootstrap/dist/js/bo
 LIBOUT   := index.min.js extern.min.js
 CSSOUT   := guidoeditor.min.css codemirror.min.css bootstrap.min.css
 OUT      := $(LIBOUT:%=dist/lib/%) $(CSSOUT:%=dist/css/%)
+GUIDOLIB := dist/lib/libGUIDOEngine.js
+GUIDONODE:= node_modules/@grame/guidolib
 
 .PHONY: examples
 
-all:  $(OUT) 
+all:  $(OUT) $(GUIDOLIB)
 
 
 ###########################################################################
@@ -26,9 +28,14 @@ help:
 	@echo "Available targets are:"
 	@echo "  all      : generates the minified files (js and css)"
 	@echo "  examples : scan the dist/examples folder to generate the examples.json file"
+	@echo "  guidolib : update the libGUIDOEngine from the npm package"
 	@echo "  clean    : remove the minified files"
 
 
+guidolib:
+	cp $(GUIDONODE)/libGUIDOEngine.js  dist/lib/
+	cp $(GUIDONODE)/libGUIDOEngine.wasm  dist/lib/
+	
 dist/lib/extern.min.js : $(EXTFILES)
 	node node_modules/.bin/minify $(EXTFILES) > $@ || (rm $@ ; false)
 
