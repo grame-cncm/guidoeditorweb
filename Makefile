@@ -16,7 +16,7 @@ GUIDONODE:= node_modules/@grame/guidolib
 
 .PHONY: examples
 
-all:  $(OUT) $(GUIDOLIB)
+all:  $(OUT) $(GUIDOLIB) README.html
 
 
 ###########################################################################
@@ -27,9 +27,19 @@ help:
 	@echo "============================================================"
 	@echo "Available targets are:"
 	@echo "  all      : generates the minified files (js and css)"
+	@echo "  readme   : generates README.html from README.md"
 	@echo "  examples : scan the dist/examples folder to generate the examples.json file"
 	@echo "  guidolib : update the libGUIDOEngine from the npm package"
 	@echo "  clean    : remove the minified files"
+
+
+readme:
+	make README.html
+
+README.html : README.md
+	echo "<!DOCTYPE html><html><xmp>" > README.html
+	cat README.md  >> README.html
+	echo "</xmp> <script src=http://strapdownjs.com/v/0.2/strapdown.js></script> </html>"  >> README.html
 
 
 guidolib:
