@@ -55,8 +55,8 @@ class GuidoEditor {
 	
 	setGmn( gmn, path) {
 		$("#gmn-name").text (path);
-		var ext = path.substr(path.lastIndexOf('.') + 1);
-		if (ext === "xml") {
+		var ext = path.substr(path.lastIndexOf('.') + 1).toLowerCase();
+		if ((ext === "xml") ||  (ext === "musicxml")) {
 			gmn = lxml.string2guido (gmn, true);
 		}
 		this.fEditor.setValue(gmn);
