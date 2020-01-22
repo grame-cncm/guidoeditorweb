@@ -1,0 +1,12 @@
+GUIDO Editor History
+
+
+----------------------------------------------------------------
+version 1.1
+- supports MusicXML import
+
+----------------------------------------------------------------
+version 1.0
+- first version (similar to the native GuidoEditor based on Qt)
+- add alternate representations (piano roll, simplified representation)
+
