@@ -263,7 +263,12 @@
 		  <p>An online music score editor based on the <a href="https://guidodoc.grame.fr" target=_blank>Guido Music Notation format</a> and on the <a href="https://github.com/grame-cncm/guidolib" target=_blank>Guido engine</a>.</p>
 		  <p>The editor itself is an open source project hosted on <a href="https://github.com/grame-cncm/guidoeditorweb" target=_blank>Github</a>.</p>
 		  <p>More about the <a href="http://guido.grame.fr" target=_blank>Guido project</a>.</p>
-		<p style="float: right"><a href="http://www.grame.fr/" target=_blank>Grame-CNCM<img src="imgs/grame.png" width=100 /></a></p><br /><br /><br />
+		  <br />
+
+		  <p>MusicXML import supported using the <a href="https://www.npmjs.com/package/@grame/libmusicxml" target=_blank>libmusicxml</a> version <span id="lxmlversion"></span><br />
+		     and the MusicXML to Guido converter version <span id="xml2guidoversion"></span></p>
+
+		  <p style="float: right"><a href="http://www.grame.fr/" target=_blank>Grame-CNCM <img src="imgs/Logo_Grame_150dpi.png" width=100 /></a></p><br /><br /><br />
 		
 		  <hr />
 		  <h4>Timings</h4> <br />
@@ -372,9 +377,10 @@
 </div>
 
 <script src="lib/libGUIDOEngine.js"></script>
+<script src="lib/libmusicxml.js"></script>
 <script src="lib/index.min.js"></script>
-
 <!-- 
+<script src="../src/lxmlinterface.js"></script>
 <script src="../src/examples.js"></script>
 <script src="../src/guido.js"></script>
 <script src="../src/engine-settings.js"></script>

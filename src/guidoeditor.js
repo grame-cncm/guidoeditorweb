@@ -55,12 +55,16 @@ class GuidoEditor {
 	
 	setGmn( gmn, path) {
 		$("#gmn-name").text (path);
+		var ext = path.substr(path.lastIndexOf('.') + 1);
+		if (ext === "xml") {
+			gmn = lxml.string2guido (gmn, true);
+		}
 		this.fEditor.setValue(gmn);
 		this.fEditor.refresh();
 	} 
 
 	drop (file) {
-		let reader = new FileReader();				
+		let reader = new FileReader();	
 		reader.onload = (event) => { this.setGmn (reader.result, file.name); };
 		reader.readAsText(file);
 	}

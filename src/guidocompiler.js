@@ -15,12 +15,20 @@ function download (filename, text) {
 	document.body.removeChild(element);
 }
 
+function xmlversion (lxml) {
+	console.log( "LibMusicXML version " + lxml.libVersionStr());
+	$("#lxmlversion").html (lxml.libVersionStr());
+	console.log( "MusicXML to GMN converter version " + lxml.musicxml2guidoVersionStr());
+	$("#xml2guidoversion").html (lxml.musicxml2guidoVersionStr());
+}
+
 //----------------------------------------------------------------------------
 // the guido engine part
 //----------------------------------------------------------------------------
 class GuidoCompiler {
 	constructor() {
 		this.fEngine = 0;
+		this.fMusicxml = 0;
 		this.fPRoll = 0;
 		this.fSPR = 0;
 		this.fParser = 0;
@@ -272,4 +280,6 @@ class GuidoCompiler {
 
 const guidoEditor = new GuidoCompiler();
 guidoEditor.initialize (guidoEditor);
+const lxml = new libmusicxml();
+lxml.initialize ().then ( xmlversion );
 
