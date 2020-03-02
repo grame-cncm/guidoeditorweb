@@ -137,7 +137,7 @@
 	 \bm(d h1 c#2 d)
 	 \bm( \stemsUp<9.5hs> e#1 \stemsUp g# a 
 	    \stemsUp<6hs> h \stemsUp )
-	 \tieBegin<dy1=3.2hs,dx2=0,dy2=3.2hs> c#2/4
+	 \tieBegin<curve="up"> c#2/4
 % measure 13 (voice 1)
 	 \bm(c#/16 \tieEnd f#1 g# a)
 	 \tieBegin<curve="up"> h/4
