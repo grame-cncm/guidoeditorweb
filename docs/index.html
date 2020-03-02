@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<link rel="shortcut icon" type="image/x-icon" href="imgs/favicon.ico" />
+
+	<link rel="stylesheet" href="font/stylesheet.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/codemirror.min.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="css/guidoeditor.min.css" type="text/css" media="screen" />
+
+	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
+
+	<script src="lib/extern.min.js"></script>
+
+	<title>Guido Editor</title>
+</head>
+
+<body>
+
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h3 class="modal-title">About SVG Files</h3>
+        </div>
+        <div class="modal-body">
+          <p>In case the saved SVG files are not correctly displayed (strange glyphs in place of notes), 
+          you should install the Guido font. </p>
+          <a href="rsrc/guido2.ttf"><button type="button" class="btn btn-default"><a href="rsrc/guido2.ttf">Download the Guido font</a></button></a>
+       </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+
+<div class="grid-container" id="container">
+  <div class="header">
+
+	<nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>                        
+		  </button>
+		  <a class="navbar-brand" href="#">Guido Editor</a>
+		</div>
+	    <div class="collapse navbar-collapse" id="myNavbar">
+		<ul class="nav navbar-nav">
+		  <li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Save<span class="caret"></span></a>
+			<ul class="dropdown-menu">
+			  <li class="dropdown-submenu"> <a tabindex="-1" href="#">Score</a>
+				<ul class="dropdown-menu">
+				  <li><a href="#" id="savegmn">as GMN</a></li>
+				  <li><a href="#" id="savesvg">as SVG</a></li>
+				  <li><a href="#" id="savehtml">as HTML</a></li>
+				</ul>
+			  <li class="dropdown-submenu"> <a tabindex="-1" href="#">Piano Roll</a>
+				<ul class="dropdown-menu">
+				  <li><a href="#" id="savesvgproll">as SVG</a></li>
+				  <li><a href="#" id="savehtmlproll">as HTML</a></li>
+				</ul>
+			  <li class="dropdown-submenu"> <a tabindex="-1" href="#">Simplified Representation</a>
+				<ul class="dropdown-menu">
+				  <li><a href="#" id="savesvgspr">as SVG</a></li>
+				  <li><a href="#" id="savehtmlspr">as HTML</a></li>
+				</ul>
+				<li class="divider"></li>
+				  <li><a href="#" id="aboutsvg" data-toggle="modal" data-target="#myModal">About SVG files</a></li>
+			</ul>
+		  </li>
+
+		  <li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">Examples <span class="caret"></span></a>
+    		<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu" id="tab-examples">
+			</ul>
+		</li>
+		<li><a href="https://guidodoc.grame.fr" target=_blank>Documentation</a></li>
+		</ul>
+	  </div>
+	  </div>
+	</nav>
+  </div>
+
+  <div class="gmn well">
+	  <ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#editor">Editor</a></li>
+		<li><a data-toggle="tab" href="#engine">Engine Settings</a></li>
+		<li><a data-toggle="tab" href="#prollsettings">Other Settings</a></li>
+		<li><a data-toggle="tab" href="#about">About</a></li>
+	  </ul>
+	  <div class="tab-content">
+		<div id="editor" class="tab-pane fade in active">
+			<textarea id="code">
+(*
+ Welcome to the Guido online editor
+*)
+{
+[
+	\clef<"g"> \key<1> \meter<"4/4"> g e f d c/1
+]
+}
+			</textarea>
+		</div>
+
+
+		<div id="engine" class="tab-pane fade settings">
+		  <h3>Guido engine settings</h3>
+		  <div class="settings-container">
+
+			 <div class="spacing well">
+			 <p class="settings-header">Notes spacing</p>
+				<table class="settings-table">
+				<tr><td class="settings-left">Spring</td>
+					<td class ="settings-slider"><input id="spring-slider" type="range" min="100" max="500" value="110"></td>
+				  	<td class ="settings-num"> 	 <input id="spring-num"    type="number" min="100" max="500" value="110" class="settings-spin"></td>
+				</tr>
+				<tr><td class="settings-left">Force</td>
+					<td class="settings-slider"><input id="force-slider" type="range" min="400" max="1500" value="750"></td>
+				  	<td class="settings-num"> 	<input id="force-num"    type="number" min="400" max="1500" value="750" class="settings-spin"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input id="check-lyrics" type="checkbox" name="checklyrics"> Check lyrics collisions</td>
+					<td></td>
+				</tr>
+				</table>
+			 </div>
+			 
+			 <div class="syslayout well">
+			 <p class="settings-header">Systems layout</p>
+				<table class="settings-table">
+				<tr><td class="settings-left">System distance</td>
+					<td class ="settings-slider"><input id="sysdist-slider" type="range" min="1" max="1000" value="75"></td>
+				  	<td class ="settings-num"> 	 <input id="sysdist-num"	type="number" min="1" max="1000" value="75" class="settings-spin"></td>
+				</tr>
+				<tr><td class="settings-left">Maximum distance</td>
+					<td class="settings-slider"><input id="maxdist-slider"  type="range" min="1" max="100" value="25"></td>
+				  	<td class="settings-num">   <input id="maxdist-num"		type="number" min="1" max="100" value="25" class="settings-spin"></td>
+				</tr>
+				<tr>
+					<td>System distribution</td>
+					<td>  <select id="sys-dist">
+						<option value="auto">auto</option>
+						<option value="always">always</option>
+						<option value="never">never</option>
+					  </select>
+					</td>
+					<td></td>
+				</tr>
+				</table>
+			 </div>
+
+			 <div class="pagelayout well">
+			 <p class="settings-header">Page layout</p>
+			 <input type="checkbox" id="optpagefill" checked> Optimum page fill<br />
+			 <input type="checkbox" id="neighborhood"> Neighborhood spacing<br />
+			 <input type="checkbox" id="resize"  checked> Resize page to music<br />
+			 <!--input type="checkbox" id="proportional"> Proportional rendering<br /-->
+			 </div>
+			 
+			 <div class="scorecolor well">
+			 <p class="settings-header">Score color</p><br />
+			 <input id="score-color" type="color" name="scorecolor" value="#000000">
+			 <input id="score-color-num" type="text" value="#000000">
+			 </div>
+
+			 <!--div class="mapping well">
+			 <p class="settings-header">Mapping and bounding boxes</p>
+			 <table class="settings-table">
+			 <tr>
+			 	<td class="mapcol"><input type="checkbox" id="showmap"> Mapping</td>
+			 	<td class="mapcol"><input type="checkbox" id="showraw"> Raw</td>
+			 	<td class="mapcol"><input type="checkbox" id="showbb"> Bounding boxes</td>
+			 </tr>
+			 <tr>
+			 	<td class="mapwhat"><input type="checkbox" id="pagemap"> Page</td>
+			 	<td class="mapwhat"><input type="checkbox" id="sysmap"> Systems</td>
+			 	<td class="mapwhat"><input type="checkbox" id="slicemap"> Systems slices</td>
+			 </tr>
+			 <tr>
+			 	<td class="mapwhat"><input type="checkbox" id="stavemap"> Staves</td>
+			 	<td class="mapwhat"><input type="checkbox" id="measmap"> Mesaures</td>
+			 	<td class="mapwhat"><input type="checkbox" id="evmap"> Events</td>
+			 </tr>
+			 </table>
+			 <br />
+			 Voice <input type="number" min="1" max="500" value="1" id="mapvoice" disabled class="settings-spin">
+			 <input type="checkbox" id="allvoices" checked> All &nbsp; &nbsp; &nbsp;
+			 Staff <input type="number" min="1" max="500" value="1" id="mapstaff" disabled class="settings-spin">
+			 <input type="checkbox" id="allstaff" checked> All
+			 </div-->
+
+			 <div class="hideelts well">
+			 <p class="settings-header">Elements to hide</p>
+				<table class="settings-table">
+				<tr>
+				<td class="hidecol"><input type="checkbox" id="hideslurs"> Slurs</td>
+			 	<td class="hidecol"><input type="checkbox" id="hidedyn"> Dynamics</td>
+				<td class="hidecol"><input type="checkbox" id="hideart"> Articulations</td>
+				</tr>
+				<tr>
+			 	<td><input type="checkbox" id="hidetext"> Text</td>
+				<td><input type="checkbox" id="hidelyrics"> Lyrics</td>
+				<td />
+				</tr>
+				</table>
+			 </div>
+
+			 <div class="pages well">
+			 <p class="settings-header">Display pages</p>
+				<label class="radio-inline"><input type="radio" name="pageradio" id="allpages" checked>All</label>
+				<label class="radio-inline"><input type="radio" name="pageradio" id="somepages" >Some</label>
+				<label class="radio-inline"><input type="radio" name="pageradio" id="lastpages" >Last</label>
+				<span class="somepages"><input type="text" id="pages" value="1-2" disabled> accept range (e.g. 1-3), list (e.g. 1,2,5) or value.</span>
+			 </div>
+  
+		  </div>
+
+			<center><button id="default-settings" type="button" class="btn btn-default settings-btn">Default</button></center>
+
+		</div>
+
+		<div id="prollsettings" class="tab-pane fade settings">
+		  <h3>Piano Roll Settings</h3>
+		  	<div class="well">
+				<table class="settings-table">
+				<tr>
+				<td class="mapcol"><input type="checkbox" id="showkbd"> Show keyboard</td>
+			 	<td class="mapcol"><input type="checkbox" id="showbars"> Show bars</td>
+				</tr>
+				<tr>
+				<td class="mapcol"><input type="checkbox" id="prollcolor"> Auto voices color</td>
+				<td class="mapcol"><input type="checkbox" id="prolllines"> Hide lines</td>
+				</tr>
+				</table>
+			</div>
+		  <h3>Simplified Proportional Representation Settings</h3>
+		  	<div class="well">
+				<table class="settings-table">
+				<tr>
+			 	<td class="mapcol"><input type="checkbox" id="sprbars"> Show bars</td>
+				<td class="mapcol"><input type="checkbox" id="sprcolor"> Auto voices color</td>
+				<td class="mapcol"><input type="checkbox" id="sprlines"> Show duration lines</td>
+				</tr>
+				</table>
+			</div>
+		</div>
+
+		<div id="about" class="tab-pane fade about">
+		  <h3>Guido editor version 1.1</h3>
+		  <h4>Guido engine version <span id="version"></span></h4>
+		  <hr />
+		  <p>An online music score editor based on the <a href="https://guidodoc.grame.fr" target=_blank>Guido Music Notation format</a> and on the <a href="https://github.com/grame-cncm/guidolib" target=_blank>Guido engine</a>.</p>
+		  <p>The editor itself is an open source project hosted on <a href="https://github.com/grame-cncm/guidoeditorweb" target=_blank>Github</a>.</p>
+		  <p>More about the <a href="http://guido.grame.fr" target=_blank>Guido project</a>.</p>
+		  <br />
+
+		  <p>MusicXML import supported using the <a href="https://www.npmjs.com/package/@grame/libmusicxml" target=_blank>libmusicxml</a> version <span id="lxmlversion"></span><br />
+		     and the MusicXML to Guido converter version <span id="xml2guidoversion"></span></p>
+
+		  <p style="float: right"><a href="http://www.grame.fr/" target=_blank>Grame-CNCM <img src="imgs/Logo_Grame_150dpi.png" width=100 /></a></p><br /><br /><br />
+		
+		  <hr />
+		  <h4>Timings</h4> <br />
+		  <table>
+		  <tr><td class="timings">Time to parse:</td><td  class="timings" id="ptime"></td></tr>
+		  <tr><td class="timings">AR to GR time:</td><td  class="timings" id="agtime"></td></tr>
+		  <tr><td class="timings">Draw time:</td>   <td  class="timings" id="dtime"></td></tr>
+		  <tr><td class="totalTime">Total time:</td><td  class="totalTime" id="ttime"></td></tr>
+		  </table>
+		  
+		  
+		</div>
+	  </div>
+  </div>  
+
+  <div class="rsize" id="rsize">
+  </div>
+
+  <div class="svg well">
+	  <ul class="nav nav-tabs noprint">
+		<li class="active"><a data-toggle="tab" href="#score">Score</a></li>
+		<li><a data-toggle="tab" href="#proll">Piano Roll</a></li>
+		<li><a data-toggle="tab" href="#spr">SPR</a></li>
+		<li><a data-toggle="tab" href="#prefs">Preferences</a></li>
+	  </ul>
+	  <div class="tab-content">
+		<div id="score" class="tab-pane fade in active"> </div>
+		<div id="proll" class="tab-pane fade in pianoroll noprint"> </div>
+		<div id="spr" class="tab-pane fade in pianoroll noprint"> </div>
+
+		<div id="prefs" class="tab-pane fade preferences noprint">
+		  <h3>Editor preferences</h3>
+		<table>
+		<tr class="prefs-table"><td>Font Family</td><td>
+		<select class="form-control" id="font-family">
+			<option>Lucida</option>
+			<option>Monaco</option>
+			<option selected>Andale Mono</option>
+			<option>Courier</option>
+			<option>Courier New</option>
+		</select></td></tr>
+		<tr class="prefs-table"><td>Font Size</td><td>
+		<select class="form-control" id="font-size">
+			<option>10</option>
+			<option>12</option>
+			<option selected>14</option>
+			<option>16</option>
+			<option>18</option>
+			<option>24</option>
+		</select></td></tr>
+		<tr class="prefs-table"><td>Editor Theme</td><td>
+		<select class="form-control" id="etheme">
+			<option>default</option>
+			<option>abcdef</option>
+			<option>ambiance</option>
+			<option>bespin</option>
+			<option>blackboard</option>
+			<option>cobalt</option>
+			<option>colorforth</option>
+			<option>dracula</option>
+			<option>duotone-dark</option>
+			<option>duotone-light</option>
+			<option>eclipse</option>
+			<option>elegant</option>
+			<option>erlang-dark</option>
+			<option>hopscotch</option>
+			<option>icecoder</option>
+			<option>isotope</option>
+			<option>lesser-dark</option>
+			<option>liquibyte</option>
+			<option>material</option>
+			<option>mbo</option>
+			<option>mdn-like</option>
+			<option>midnight</option>
+			<option>monokai</option>
+			<option>neat</option>
+			<option>neo</option>
+			<option>night</option>
+			<option>panda-syntax</option>
+			<option>paraiso-dark</option>
+			<option>paraiso-light</option>
+			<option>pastel-on-dark</option>
+			<option>railscasts</option>
+			<option>rubyblue</option>
+			<option>seti</option>
+			<option>solarized</option>
+			<option>the-matrix</option>
+			<option>tomorrow-night-bright</option>
+			<option>tomorrow-night-eighties</option>
+			<option>ttcn</option>
+			<option>twilight</option>
+			<option>vibrant-ink</option>
+			<option>xq-dark</option>
+			<option>xq-light</option>
+			<option>yeti</option>
+			<option>zenburn</option>
+		</select></td></tr>
+		<tr class="prefs-table"><td>Wrap lines</td><td><input type="checkbox" id="wraplines" checked></td></tr>
+		</table>
+
+		</div>
+	  </div>
+  </div>
+
+  <div class="footer well"><span class="gmn-name"  id="gmn-name"></span> <span class="gmn-error"  id="gmn-error"></span></div>
+</div>
+
+<script src="lib/libGUIDOEngine.js"></script>
+<script src="lib/libmusicxml.js"></script>
+<script src="lib/index.min.js"></script>
+<!-- 
+<script src="../src/lxmlinterface.js"></script>
+<script src="../src/examples.js"></script>
+<script src="../src/guido.js"></script>
+<script src="../src/engine-settings.js"></script>
+<script src="../src/guidoeditor.js"></script>
+<script src="../src/guidoaltview.js"></script>
+<script src="../src/guidocompiler.js"></script>
+ -->
+
+</body>
+</html>

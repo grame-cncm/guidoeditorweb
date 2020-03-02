@@ -1,0 +1,38 @@
+% \fingering tag 
+% example of fingering on chords: fingering must be attached to each note of the chord
+% note that fingering attached to a chord is ignored (e.g. \fing<"1">({c,e,g})
+%
+% fingering on chords can also be expressed using comma separated list and attached 
+% to one note of the chord. In this case, you sould attach the fingering to 
+% the highest note when placed above and to the lowest note when below.
+%
+[ 
+	\meter<"4/4">
+	{	\fingering<"1", dy=15.2>( c) , 
+		\fingering<"3", dy=16.4>( e),
+		\fingering<"5", dy=17.6>( g) }
+
+	{	c, e, \fingering<"1,3,5", position="above", dy=0>( g) } 
+
+	{	\fingering<"1,3,5", position="below", dy=-1>( c), e, g }
+
+	\fingering<"3">( c )
+
+
+	\fingering<"3", position="below", fsize=10pt>( c )
+	\fingering<"2", position="above", fsize=16pt>( c2 )
+
+	\fingering<"1", position="below">( b0 )
+	\fingering<"2", position="below">( g1 )
+	\fingering<"3", position="below">( a )
+	\fingering<"2", position="above">( d )
+	\sl(
+	\set<fingeringPos="above">
+	\fing<"2">( g )
+	\fing<"2">( c2 )
+	\fing<"2">( e2 )
+	\fing<"2">( g2 ))
+	\fing<"4", fsize=12pt>( h )
+	\accent(\fing<"1", fsize=9pt>( c2 ) )
+]
+
