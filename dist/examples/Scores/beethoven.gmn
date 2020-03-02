@@ -99,11 +99,11 @@ Source: [Mutopia project](https://www.mutopiaproject.org/ftp/BeethovenLv/O2/LVB_
 		{ f/8 \tieEnd , \fing<"1">(a) } \slurEnd _ _/4 \stemsUp
 % measure 9
 		\slurBegin<h=5, dy=8, dy2=3> \fing<"3", dy=-7>(a/16) b& c1 b&0 a b& c1 b&0
-		\fing<"3", dy=-6>(f) a c1 a0
+		\fing<"3", dy=-8>(f) a c1 a0
 % measure 9
-		\fing<"4", dy=-5>(e) \slurEnd g c1 g0 e g c1 g0 f a c1 a0
+		\fing<"4", dy=-8>(e) \slurEnd g c1 g0 e g c1 g0 f a c1 a0
 % measure 10
-		g b& c1 b&0 g b& c1 b&0 \fing<"2", dy=-5>(a) c1 a0 f
+		g b& c1 b&0 g b& c1 b&0 \fing<"2", dy=-8>(a) c1 a0 f
 		|
 	],
 	[
