@@ -42,7 +42,21 @@ help:
 	@echo "  guidolib     : update the libGUIDOEngine from the npm package"
 	@echo "  libmusicxml  : update the libmusicxml lib from the npm package"
 	@echo "  clean        : remove the minified files"
+	@echo "============================================================"
+	@echo "  publish      : publish the web site (use with caution)"
 
+
+publish:
+	git checkout master
+	git merge dev
+	$(MAKE) site
+	@echo "Site is in docs folder: review the changes, add new files, commit and push manually"
+
+site: docs
+	cp -R $(DIST)/* docs
+
+docs:
+	mkdir docs
 
 minify:  $(OUT) $(GUIDOLIB) $(LXMLLIB) README.html
 
