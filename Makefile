@@ -11,16 +11,10 @@ TSLIB	 := $(TSFOLDER)/lib
 GUIDOTS := guidoengine.ts libGUIDOEngine.d.ts
 LXMLTS  := libmusicxml.ts libmusicxml.d.ts
 TSFILES := $(GUIDOTS:%=$(TSLIB)/%) $(LXMLTS:%=$(TSLIB)/%)
-# MODULES     := node_modules/@grame
-# GUIDO       := $(MODULES)/guidolib
-# MXML        := $(MODULES)/libmusicxml
 
-
-#SRC :=  lxmlinterface.js examples.js guido.js engine-settings.js guidoeditor.js guidoaltview.js guidocompiler.js
 CSS := editor.css settings.css prefs.css
 
 CMFILES  := $(CM:%=node_modules/codemirror/%)
-#JSFILES  := $(SRC:%=src/%)
 CSSFILES := $(CSS:%=css/%)
 EXTFILES := node_modules/jquery/dist/jquery.js node_modules/bootstrap/dist/js/bootstrap.js node_modules/codemirror/lib/codemirror.js
 LIBOUT   := extern.min.js
@@ -112,14 +106,12 @@ README.html : README.md
 	cat README.md  >> README.html
 	echo "</xmp> <script src=http://strapdownjs.com/v/0.2/strapdown.js></script> </html>"  >> README.html
 
+examples:
+	cd $(DIST) && node ../scripts/listEx.js
 
 ###########################################################################
-	
 $(DIST)/lib/extern.min.js : $(EXTFILES)
 	node node_modules/.bin/minify $(EXTFILES) > $@ || (rm $@ ; false)
-
-# $(DIST)/lib/index.min.js : $(JSFILES)
-# 	node node_modules/.bin/minify $(JSFILES) > $@ || (rm $@ ; false)
 
 $(DIST)/guidoeditor.min.js : $(DIST)/guidoeditor.js
 	node node_modules/.bin/minify $< > $@ || (rm $@ ; false)
@@ -130,9 +122,6 @@ $(CSSDIR)/guidoeditor.min.css : $(CSSFILES)
 $(CSSDIR)/codemirror.min.css : $(CMFILES)
 	node node_modules/.bin/minify $(CMFILES) > $@ || (rm $@s ; false)
 
-
-examples:
-	cd $(DIST) && node ../scripts/listEx.js
 	
 clean :
 	rm $(OUT)
