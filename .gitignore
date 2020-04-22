@@ -1,11 +1,6 @@
-dist/css/bootstrap.min.css*
-dist/css/codemirror.min.css
-dist/css/guidoeditor.min.css
 
-dist/lib/extern.min.js
-dist/lib/index.min.js
 node_modules
+docs/guidoeditor.js
+src/lib
 
 .DS_Store
-
-dist/lib/debug
