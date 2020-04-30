@@ -29,7 +29,7 @@ function load (name, path) {
 	fetch("./" + path)
 		.then(response => response.text())
 		.then((code) => {
-			guidoEditor.setGmn (code, path);
+			guidoCompiler.setGmn (code, path);
 		});
 	}
 }

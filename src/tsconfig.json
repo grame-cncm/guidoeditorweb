@@ -1,0 +1,15 @@
+{
+    "__comment": "the 'allowxxx' compiler options are intended to the INScore parser (js)",
+    "compilerOptions": {
+       "lib": [ "es2015", "dom" ],
+       "module": "system",
+        "target": "es5",
+        "noImplicitAny": true,
+        "outDir": "build",
+        "out": "../docs/guidoeditor.js",
+        "sourceMap": false,
+        "allowUnreachableCode": true,
+        "allowUnusedLabels": true,
+        "allowJs": true
+    }
+}
