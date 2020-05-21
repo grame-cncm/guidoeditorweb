@@ -4,6 +4,8 @@
 ///<reference path="guidoeditor.ts"/>
 ///<reference path="guidoaltview.ts"/>
 
+interface UrlOption  { option: string; value: string; }
+
 //----------------------------------------------------------------------------
 // a download function
 //----------------------------------------------------------------------------
@@ -72,7 +74,7 @@ class GuidoCompiler {
 			this.fEditor = new GuidoEditor ("code", this);
 			settings.setDefault();
 			this.fColor = settings.color;
-			this.scanUrl();
+			this.scanOptions();
  			this.process (this.fEditor.value);
 		});
 	}
@@ -168,29 +170,83 @@ class GuidoCompiler {
 		this.fCurrentSettings.optimalPageFill = 0;
 	}
 
-
 	//------------------------------------------------------------------------
-	// scan the current location to detect code of src parameters
-	scanUrl() {
-		var arg = window.location.search.substring(1);
-		var n = arg.search("=");
-		if (n >= 0) { 
-			var name  = arg.substr(0,n);
-			var value = arg.substr(n+1);
-			switch (name) {
+	// scan the current location to detect parameters
+	scanOptions() : void	{
+		let options = this.scanUrl();
+		let preview = false;
+		for (let i=0; (i<options.length) && !preview; i++) {
+			if ((options[i].option == "mode") && (options[i].value == "preview"))
+				preview = true;
+		}
+		for (let i=0; i<options.length; i++) {
+			let option = options[i].option;
+			let value = options[i].value;
+			switch (option) {
 				case "code":
 					this.setGmn(atob(value), "");
+					if (preview) $("#fullscreen").click();
+					preview = false;
 					break;
 				case "src":
 					var oReq = new XMLHttpRequest();
-					oReq.onload = () => { this.setGmn( oReq.responseText, value); };
+					if (preview) oReq.onload = () => { this.setGmn( oReq.responseText, value); $("#fullscreen").click(); };
+					else 		 oReq.onload = () => { this.setGmn( oReq.responseText, value); };
 					oReq.open("get", value, true);
-					oReq.send();					
+					oReq.send();
+					preview = false;
 					break;
 			}
 		}
+		if (preview)
+			$("#fullscreen").click();
 	}
 
+	//------------------------------------------------------------------------
+	// scan the current location to detect code of src parameters
+	// scanUrl() {
+	// 	var arg = window.location.search.substring(1);
+	// 	var n = arg.search("=");
+	// 	if (n >= 0) { 
+	// 		var name  = arg.substr(0,n);
+	// 		var value = arg.substr(n+1);
+	// 		switch (name) {
+	// 			case "code":
+	// 				this.setGmn(atob(value), "");
+	// 				break;
+	// 			case "src":
+	// 				var oReq = new XMLHttpRequest();
+	// 				oReq.onload = () => { this.setGmn( oReq.responseText, value); };
+	// 				oReq.open("get", value, true);
+	// 				oReq.send();					
+	// 				break;
+	// 		}
+	// 	}
+	// }
+
+	//------------------------------------------------------------------------
+	// scan the current location to detect parameters
+	scanUrl() : Array<UrlOption>	{
+		let result = new Array<UrlOption>();
+		let arg = window.location.search.substring(1);
+		let n = arg.indexOf("=");
+		while (n > 0) {
+			let option  = arg.substr(0,n);
+			let remain = arg.substr(n+1);
+			let next = remain.indexOf("?");
+			if (next > 0) {
+				let value = remain.substr(0,next);
+				result.push ( {option: option, value: value} );
+				arg = remain.substr(next + 1);
+				n = arg.indexOf("=");
+			}
+			else {
+				result.push ( {option: option, value: remain} );
+				break;
+			}
+		}
+		return result;
+	}
 
 	//------------------------------------------------------------------------
 	// show all pages

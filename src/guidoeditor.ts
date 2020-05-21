@@ -53,7 +53,7 @@ class GuidoEditor {
 		this.fEditor.setOption("theme", <string>$("#etheme").val());
 		this.fEditor.setOption("lineWrapping",  <boolean>$("#wraplines").is(":checked"));
 
-		$("#fullscreen").mousedown		( (event) => { this.loadPreview() }); 
+		$("#fullscreen").click		( (event) => { this.loadPreview() }); 
 		this.fKeyHandler = this.closePreview;
 	}
 
@@ -65,17 +65,26 @@ class GuidoEditor {
 	}
 	
 	loadPreview() {
-		let div = document.getElementById("preview");
 		let score = document.getElementById("score");
-		let fullscore = document.getElementById("fullscore");
-console.log ("load preview: " + div + " " + score + " " + fullscore);
-		fullscore.innerHTML = score.innerHTML;
-		div.style.visibility = "visible";
-		window.addEventListener ("keydown", this.fKeyHandler, {capture: true});
+		if (score.innerHTML) {
+			let div = document.getElementById("preview");
+			let fullscore = document.getElementById("fullscore");
+			fullscore.innerHTML = score.innerHTML;
+			div.style.visibility = "visible";
+			window.addEventListener ("keydown", this.fKeyHandler, {capture: true});
+		}
+		else window.setTimeout( () : void => { this.loadPreview()}, 50);
 	}
 
 	setGmn( gmn: string, path: string): void {
-		$("#gmn-name").text (path);
+		let displayName = path;
+		let rem = path.length - 89;
+		if (rem > 3) {
+			let offset = 10;
+			displayName = path.substr(0, (path.length - rem)/2 - offset) + "..." + path.substr((path.length + rem)/2 - offset);
+		}
+
+		$("#gmn-name").text (displayName);
 		var ext = path.substr(path.lastIndexOf('.') + 1).toLowerCase();
 		if ((ext === "xml") ||  (ext === "musicxml")) {
 			gmn = lxml.string2guido (gmn, true);
@@ -91,7 +100,6 @@ console.log ("load preview: " + div + " " + score + " " + fullscore);
 	}
 	
 	select(line: number, col: number) 	{ this.fEditor.setSelection( {line: line, ch: col-1}, {line: line, ch: col} ) };
-	// resize(h: number) 			{ $("div.CodeMirror").css("height", h) };
 	get value(): string 		{ return this.fEditor.getValue(); }
 }
 
