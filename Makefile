@@ -8,18 +8,18 @@ FONTDIR := $(DIST)/font
 CSSDIR  := $(DIST)/css
 TSFOLDER := src
 TSLIB	 := $(TSFOLDER)/lib
+TSSRC   := $(wildcard $(TSFOLDER)/*.ts)
 GUIDOTS := guidoengine.ts libGUIDOEngine.d.ts
 LXMLTS  := libmusicxml.ts libmusicxml.d.ts
 TSFILES := $(GUIDOTS:%=$(TSLIB)/%) $(LXMLTS:%=$(TSLIB)/%)
 
-CSS := editor.css settings.css prefs.css
+CSS := editor.css settings.css
 
 CMFILES  := $(CM:%=node_modules/codemirror/%)
 CSSFILES := $(CSS:%=css/%)
-EXTFILES := node_modules/jquery/dist/jquery.js node_modules/bootstrap/dist/js/bootstrap.js node_modules/codemirror/lib/codemirror.js
-LIBOUT   := extern.min.js
+EXTFILES := node_modules/jquery/dist/jquery.min.js node_modules/bootstrap/dist/js/bootstrap.min.js # node_modules/codemirror/lib/codemirror.js
 CSSOUT   := guidoeditor.min.css codemirror.min.css bootstrap.min.css
-OUT      := $(LIBOUT:%=$(DIST)/lib/%) $(CSSOUT:%=$(DIST)/css/%)
+OUT      := $(CSSOUT:%=$(DIST)/css/%)
 GUIDOLIB := $(DIST)/lib/libGUIDOEngine.js
 LXMLLIB  := $(DIST)/lib/libmusicxml.js
 GUIDONODE:= node_modules/@grame/guidolib
@@ -49,6 +49,7 @@ help:
 	@echo "========== Development targets"
 	@echo "  ts           : build the typescript version"
 	@echo "  tslibs       : update $(TSLIB) folder from nodes_modules"
+	@echo "  css          : build minified stylesheets"
 	@echo "  examples     : scan the $(DIST)/examples folder to generate the examples.json file"
 	@echo "========== Deployment targets"
 	@echo "  libs         : update wasm libs in $(DIST)/lib folder from nodes_modules and minify external libs"
@@ -61,7 +62,7 @@ help:
 ###########################################################################
 ts : $(TSLIB) $(DIST)/guidoeditor.js
 
-$(DIST)/guidoeditor.js : $(TSFILES)
+$(DIST)/guidoeditor.js : $(TSSRC) $(TSFILES)
 	cd $(TSFOLDER) && tsc
 
 tslibs:
@@ -70,11 +71,12 @@ tslibs:
 	cp $(LXMLNODE)/libmusicxml.ts $(TSLIB)
 	cp $(LXMLNODE)/libmusicxml.d.ts $(TSLIB)
 
-libs: $(DIST)/lib $(DIST)/lib/extern.min.js
+libs: $(DIST)/lib $(CSSDIR)/codemirror.min.css
 	cp $(GUIDONODE)/libGUIDOEngine.js 	$(DIST)/lib
 	cp $(GUIDONODE)/libGUIDOEngine.wasm $(DIST)/lib
 	cp $(LXMLNODE)/libmusicxml.js 		$(DIST)/lib
 	cp $(LXMLNODE)/libmusicxml.wasm 	$(DIST)/lib
+	cp $(EXTFILES) $(DIST)/lib
 
 $(TSLIB):
 	mkdir $(TSLIB)
@@ -83,17 +85,15 @@ $(DIST)/lib:
 	mkdir $(DIST)/lib
 
 test:
-	@echo $(TSFILES)
+	@echo $(TSSRC)
 
 minify:  $(OUT) $(GUIDOLIB) $(LXMLLIB) $(DIST)/guidoeditor.min.js
 
 font:  $(FONTDIR)
 	cp $(GUIDONODE)/guido2-webfont/guido2-webfont.woff* $(FONTDIR)
-	cp $(GUIDONODE)/guido2-webfont/stylesheet.css $(FONTDIR)
 	
 css: $(CSSDIR)/guidoeditor.min.css $(CSSDIR)/guidoeditor.min.css $(CSSDIR)/codemirror.min.css
 	cp node_modules/bootstrap/dist/css/bootstrap.min.css* $(DIST)/css/ 
-
 
 $(FONTDIR):
 	mkdir $(FONTDIR)
@@ -110,9 +110,6 @@ examples:
 	cd $(DIST) && node ../scripts/listEx.js
 
 ###########################################################################
-$(DIST)/lib/extern.min.js : $(EXTFILES)
-	node node_modules/.bin/minify $(EXTFILES) > $@ || (rm $@ ; false)
-
 $(DIST)/guidoeditor.min.js : $(DIST)/guidoeditor.js
 	node node_modules/.bin/minify $< > $@ || (rm $@ ; false)
 
@@ -122,6 +119,5 @@ $(CSSDIR)/guidoeditor.min.css : $(CSSFILES)
 $(CSSDIR)/codemirror.min.css : $(CMFILES)
 	node node_modules/.bin/minify $(CMFILES) > $@ || (rm $@s ; false)
 
-	
 clean :
 	rm $(OUT)
