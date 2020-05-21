@@ -1,6 +1,7 @@
 
 
 interface Compiler { process (gmn: string) : void }
+interface KeyHandler { (event: KeyboardEvent) : void }
 
 //----------------------------------------------------------------------------
 // this is the editor part, currently using CodeMirror
@@ -8,6 +9,7 @@ interface Compiler { process (gmn: string) : void }
 class GuidoEditor {
 
 	private fEditor: CodeMirror.EditorFromTextArea;
+	private fKeyHandler : KeyHandler;
 
 	constructor (divID: string, compiler: GuidoCompiler) {
 		this.fEditor = CodeMirror.fromTextArea (<HTMLTextAreaElement>document.getElementById (divID), {
@@ -51,8 +53,27 @@ class GuidoEditor {
 		this.fEditor.setOption("theme", <string>$("#etheme").val());
 		this.fEditor.setOption("lineWrapping",  <boolean>$("#wraplines").is(":checked"));
 
+		$("#fullscreen").mousedown		( (event) => { this.loadPreview() }); 
+		this.fKeyHandler = this.closePreview;
+	}
+
+	closePreview(event: KeyboardEvent) {
+		if (event.key == 'Escape') {
+			$("#fsclose").click();
+			window.removeEventListener("keydown", this.fKeyHandler, {capture: true});
+		}
 	}
 	
+	loadPreview() {
+		let div = document.getElementById("preview");
+		let score = document.getElementById("score");
+		let fullscore = document.getElementById("fullscore");
+console.log ("load preview: " + div + " " + score + " " + fullscore);
+		fullscore.innerHTML = score.innerHTML;
+		div.style.visibility = "visible";
+		window.addEventListener ("keydown", this.fKeyHandler, {capture: true});
+	}
+
 	setGmn( gmn: string, path: string): void {
 		$("#gmn-name").text (path);
 		var ext = path.substr(path.lastIndexOf('.') + 1).toLowerCase();
@@ -60,7 +81,7 @@ class GuidoEditor {
 			gmn = lxml.string2guido (gmn, true);
 		}
 		this.fEditor.setValue(gmn);
-		this.fEditor.refresh();
+		// this.fEditor.refresh();
 	} 
 
 	drop (file: File) {
@@ -70,7 +91,7 @@ class GuidoEditor {
 	}
 	
 	select(line: number, col: number) 	{ this.fEditor.setSelection( {line: line, ch: col-1}, {line: line, ch: col} ) };
-	resize(h: number) 			{ $("div.CodeMirror").css("height", h) };
+	// resize(h: number) 			{ $("div.CodeMirror").css("height", h) };
 	get value(): string 		{ return this.fEditor.getValue(); }
 }
 
