@@ -20,7 +20,7 @@ CodeMirror.defineMode("guido", function () {
   function tokenize(stream, state) {
 
     if (stream.match(solf_regex, true))
-      if (!state.inComment) return 'def';
+    if (!state.inComment) return 'def';
 
     var ch = stream.next();
 
@@ -34,8 +34,10 @@ CodeMirror.defineMode("guido", function () {
     }
     if (state.inComment) {
       if (ch == "*") {
-         if (stream.peek() == ")")
+         if (stream.peek() == ")") {
+			ch = stream.next();
             state.inComment = false;
+        }
       }
       return 'comment';
     }
