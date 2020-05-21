@@ -8,13 +8,15 @@
 .hideelts 	{ grid-area: hideelts;}
 .pages 		{ grid-area: pages;}
 
+#prollsettings { width: 95%; }
+
 input:disabled {
   background: #f0f0f0;
 }
 
 .settings-container {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 45% 50%;
   grid-template-areas:
     'spacing spacing'
     'syslayout syslayout'
@@ -24,6 +26,7 @@ input:disabled {
     'pages pages';
   grid-gap: 1px;
   padding: 1px;
+  /* margin-right: 10px; */
 }
 
 .settings-container > div {
