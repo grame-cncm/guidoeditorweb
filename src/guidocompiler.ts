@@ -49,7 +49,7 @@ class GuidoCompiler {
 		this.fPRoll  = new GuidoPRoll(this.fEngine);
 		this.fSPR    = new GuidoSPR(this.fEngine);
 
-	$("#savegmn").click			( (event) => { this.saveGMN(); });
+		$("#savegmn").click			( (event) => { this.saveGMN(); });
 		$("#savesvg").click			( (event) => { this.saveSVG(); });
 		$("#savehtml").click		( (event) => { this.saveHTML(); });
 		$("#savesvgproll").click	( (event) => { this.saveSVGPRoll(); });
@@ -101,7 +101,6 @@ class GuidoCompiler {
 			embed = false;
 		});
 		this.showTime();
-		this.fEditor.resize ($("#score").height());
 	}
 	
 	displayPages( from: number, to: number ) {
@@ -114,7 +113,6 @@ class GuidoCompiler {
 			this.fDrawTime += this.fEngine.getOnDrawTime(this.fGR);
 		}
 		this.showTime();
-		this.fEditor.resize ($("#score").height());
 	}
 	
 	display() {
@@ -181,11 +179,11 @@ class GuidoCompiler {
 			var value = arg.substr(n+1);
 			switch (name) {
 				case "code":
-					this.fEditor.setGmn(atob(value), "");
+					this.setGmn(atob(value), "");
 					break;
 				case "src":
 					var oReq = new XMLHttpRequest();
-					oReq.onload = () => { this.fEditor.setGmn( oReq.responseText, value); };
+					oReq.onload = () => { this.setGmn( oReq.responseText, value); };
 					oReq.open("get", value, true);
 					oReq.send();					
 					break;
