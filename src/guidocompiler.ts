@@ -185,8 +185,8 @@ class GuidoCompiler {
 			switch (option) {
 				case "code":
 					this.setGmn(atob(value), "");
-					if (preview) $("#fullscreen").click();
-					preview = false;
+					// if (preview) $("#fullscreen").click();
+					// preview = false;
 					break;
 				case "src":
 					var oReq = new XMLHttpRequest();
@@ -195,6 +195,18 @@ class GuidoCompiler {
 					oReq.open("get", value, true);
 					oReq.send();
 					preview = false;
+					break;
+				case "s":
+					let gmn = localStorage.getItem(value);
+					if (gmn) {
+						this.setGmn(gmn, "");
+						// if (preview) $("#fullscreen").click();
+						// preview = false;
+					}
+					else {
+						console.log ("Can't retrieve data from session." + value + " '" + gmn + "'");
+						alert ("Error:\ncan't retrieve data from session.");
+					}
 					break;
 			}
 		}
