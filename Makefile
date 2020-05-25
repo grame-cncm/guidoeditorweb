@@ -29,8 +29,9 @@ LXMLNODE := node_modules/@grame/libmusicxml
 
 all: $(DIST) $(OUT) $(GUIDOLIB)
 	$(MAKE) examples
-	$(MAKE) ts
+	$(MAKE) tslibs
 	$(MAKE) libs
+	$(MAKE) ts
 	$(MAKE) font
 	$(MAKE) css
 	$(MAKE) minify
