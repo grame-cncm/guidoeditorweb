@@ -8,6 +8,7 @@ html, body {
 	height: 99%;
 }
 
+
 .about 		{ width: 95%; margin : 50px; }
 .settings 	{ margin : 20px; }
 .preferences { margin : 20px; }
@@ -46,6 +47,7 @@ html, body {
 }
 
 .CodeMirror { height: calc(100% - 40px); }
+#lxmlcom { visibility: hidden;}
 #score { overflow: auto; }
 #preview  { padding-left: 5px; padding-top: 5px; background: white; height: 100%; }
 #gmn-name { color: rgb(83, 82, 82); font-size: 90%; }
