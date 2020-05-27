@@ -210,7 +210,7 @@ class GuidoCompiler {
 					var oReq = new XMLHttpRequest();
 					if (preview) oReq.onload = () => { this.setGmn( oReq.responseText, value); $("#fullscreen").click(); };
 					else 		 oReq.onload = () => { this.setGmn( oReq.responseText, value); };
-					oReq.open("get", "http://localhost:8080/code/?s=" + value, true);
+					oReq.open("get", "https://libmusicxml.grame.fr/code/?s=" + value, true);
 					oReq.withCredentials = true;
 					oReq.setRequestHeader("Access-Control-Allow-Origin", "*");
 					oReq.setRequestHeader("Content-Type", "text/plain");
