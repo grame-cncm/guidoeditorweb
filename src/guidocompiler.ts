@@ -75,7 +75,9 @@ class GuidoCompiler {
 			settings.setDefault();
 			this.fColor = settings.color;
 			this.scanOptions();
- 			this.process (this.fEditor.value);
+			let gmn = localStorage.getItem ("gmn");
+			if (!gmn) gmn = this.fEditor.value;
+			this.process (gmn);
 		});
 	}
 	
@@ -154,6 +156,7 @@ class GuidoCompiler {
 		if (this.fAR) this.fEngine.freeAR (this.fAR);	
 		this.fAR = this.fEngine.string2AR (this.fParser, gmn);
 		if (this.fAR) {
+			localStorage.setItem ("gmn", gmn);
 			this.ar2gr (this.fAR);
 			$("#gmn-error").text ("");
 		}
@@ -185,8 +188,6 @@ class GuidoCompiler {
 			switch (option) {
 				case "code":
 					this.setGmn(atob(value), "");
-					// if (preview) $("#fullscreen").click();
-					// preview = false;
 					break;
 				case "src":
 					var oReq = new XMLHttpRequest();
@@ -197,44 +198,39 @@ class GuidoCompiler {
 					preview = false;
 					break;
 				case "s":
-					let gmn = localStorage.getItem(value);
-					if (gmn) {
-						this.setGmn(gmn, "");
-						// if (preview) $("#fullscreen").click();
-						// preview = false;
-					}
-					else {
-						console.log ("Can't retrieve data from session." + value + " '" + gmn + "'");
-						alert ("Error:\ncan't retrieve data from session.");
-					}
+					console.log ("editor s option value " + value );
+
+					let iframe = <HTMLIFrameElement>document.getElementById("lxmlcom");
+					iframe.src = "http://localhost:8080/code/?s=" + value;
+					iframe.onload = () => { 
+					let content = iframe.contentWindow.document.getElementById("code");
+					console.log ("editor frame content " + content ); };
+
+					// var oReq = new XMLHttpRequest();
+					// if (preview) oReq.onload = () => { this.setGmn( oReq.responseText, value); $("#fullscreen").click(); };
+					// else 		 oReq.onload = () => { this.setGmn( oReq.responseText, value); };
+					// oReq.open("get", "http://localhost:8080/code/?s=" + value, true);
+					// oReq.withCredentials = true;
+					// oReq.setRequestHeader("Access-Control-Allow-Origin", "*");
+					// oReq.setRequestHeader("Content-Type", "text/plain");
+					// oReq.send();
+					preview = false;
 					break;
+
+					// let gmn = localStorage.getItem(value);
+					// if (gmn) {
+					// 	this.setGmn(gmn, "");
+					// }
+					// else {
+					// 	console.log ("Can't retrieve data from session." + value + " '" + gmn + "' :" + Storage.length);
+					// 	alert ("Error:\ncan't retrieve data from session.");
+					// }
+					// break;
 			}
 		}
 		if (preview)
 			$("#fullscreen").click();
 	}
-
-	//------------------------------------------------------------------------
-	// scan the current location to detect code of src parameters
-	// scanUrl() {
-	// 	var arg = window.location.search.substring(1);
-	// 	var n = arg.search("=");
-	// 	if (n >= 0) { 
-	// 		var name  = arg.substr(0,n);
-	// 		var value = arg.substr(n+1);
-	// 		switch (name) {
-	// 			case "code":
-	// 				this.setGmn(atob(value), "");
-	// 				break;
-	// 			case "src":
-	// 				var oReq = new XMLHttpRequest();
-	// 				oReq.onload = () => { this.setGmn( oReq.responseText, value); };
-	// 				oReq.open("get", value, true);
-	// 				oReq.send();					
-	// 				break;
-	// 		}
-	// 	}
-	// }
 
 	//------------------------------------------------------------------------
 	// scan the current location to detect parameters
