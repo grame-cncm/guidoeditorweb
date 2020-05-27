@@ -201,7 +201,8 @@ class GuidoCompiler {
 					console.log ("editor s option value " + value );
 
 					let iframe = <HTMLIFrameElement>document.getElementById("lxmlcom");
-					iframe.src = "http://localhost:8080/code/?s=" + value;
+					iframe.src = "http://libmusicxml.grame.fr/code/?s=" + value;
+					// iframe.src = "http://localhost:8080/code/?s=" + value;
 					iframe.onload = () => { 
 					let content = iframe.contentWindow.document.getElementById("code");
 					console.log ("editor frame content " + content ); };
