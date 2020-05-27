@@ -61,7 +61,7 @@ help:
 
 
 ###########################################################################
-ts : $(TSLIB) $(DIST)/guidoeditor.js
+ts : $(TSLIB) $(DIST)/guidoeditor.min.js
 
 $(DIST)/guidoeditor.js : $(TSSRC) $(TSFILES)
 	cd $(TSFOLDER) && tsc
