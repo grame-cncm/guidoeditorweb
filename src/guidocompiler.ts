@@ -203,7 +203,9 @@ class GuidoCompiler {
 					iframe.src = "https://libmusicxml.grame.fr/code/?s=" + value;
 					iframe.onload = () => { 
 					let content = iframe.contentWindow.document.getElementById("code");
-					console.log ("editor frame content " + content.innerText ); };
+						console.log ("editor frame content " + content.innerText ); 
+						this.setGmn (content.innerText, "");
+					};
 
 					// var oReq = new XMLHttpRequest();
 					// if (preview) oReq.onload = () => { this.setGmn( this.getGmn(oReq.responseText), value); $("#fullscreen").click(); };
