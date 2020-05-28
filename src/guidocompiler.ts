@@ -191,8 +191,8 @@ class GuidoCompiler {
 					break;
 				case "src":
 					var oReq = new XMLHttpRequest();
-					if (preview) oReq.onload = () => { this.setGmn( oReq.responseText, value); $("#fullscreen").click(); };
-					else 		 oReq.onload = () => { this.setGmn( oReq.responseText, value); };
+					// if (preview) oReq.onload = () => { this.setGmn( oReq.responseText, value); $("#fullscreen").click(); };
+					// else 		 oReq.onload = () => { this.setGmn( oReq.responseText, value); };
 					oReq.open("get", value, true);
 					oReq.send();
 					preview = false;
