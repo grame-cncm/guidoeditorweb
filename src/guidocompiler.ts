@@ -241,9 +241,9 @@ class GuidoCompiler {
 	//------------------------------------------------------------------------
 	// show all pages
 	getGmn (page: string) 	{ 
-		let n1 = page.indexOf ("<body");
+		let n1 = page.indexOf ("<pre");
 		let bn = page.indexOf (">", n1);
-		let n2 = page.indexOf ("</body>");
+		let n2 = page.indexOf ("</pre>");
 		return page.substring (n1 + bn + 1, n2-1);
 	}
 
