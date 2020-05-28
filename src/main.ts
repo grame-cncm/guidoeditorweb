@@ -35,3 +35,5 @@ console.log ("message received from " + event.origin);
         return; 
     } 
 });
+
+document.domain = "grame.fr";
