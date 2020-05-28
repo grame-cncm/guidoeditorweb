@@ -198,22 +198,22 @@ class GuidoCompiler {
 					preview = false;
 					break;
 				case "s":
-					console.log ("iframe editor s option value " + value );
-					let iframe = <HTMLIFrameElement>document.getElementById("lxmlcom");
-					iframe.src = "https://libmusicxml.grame.fr/code/?s=" + value;
-					// iframe.src = "http://localhost:8080/code/?s=" + value;
-					iframe.onload = () => { 
-					let content = iframe.contentWindow.document.getElementById("code");
-					console.log ("editor frame content " + content ); };
+					// console.log ("iframe editor s option value " + value );
+					// let iframe = <HTMLIFrameElement>document.getElementById("lxmlcom");
+					// iframe.src = "https://libmusicxml.grame.fr/code/?s=" + value;
+					// // iframe.src = "http://localhost:8080/code/?s=" + value;
+					// iframe.onload = () => { 
+					// let content = iframe.contentWindow.document.getElementById("code");
+					// console.log ("editor frame content " + content ); };
 
-					// var oReq = new XMLHttpRequest();
-					// if (preview) oReq.onload = () => { this.setGmn( this.getGmn(oReq.responseText), value); $("#fullscreen").click(); };
-					// else 		 oReq.onload = () => { this.setGmn( this.getGmn(oReq.responseText), value); };
-					// oReq.open("get", "https://libmusicxml.grame.fr/code/?s=" + value, true);
-					// oReq.setRequestHeader("Access-Control-Allow-Origin", "*");
-					// oReq.setRequestHeader("Accept", "text/plain");
-					// oReq.send();
-					// preview = false;
+					var oReq = new XMLHttpRequest();
+					if (preview) oReq.onload = () => { this.setGmn( this.getGmn(oReq.responseText), value); $("#fullscreen").click(); };
+					else 		 oReq.onload = () => { this.setGmn( this.getGmn(oReq.responseText), value); };
+					oReq.open("get", "https://libmusicxml.grame.fr/code/?s=" + value, true);
+					oReq.setRequestHeader("Access-Control-Allow-Origin", "*");
+					oReq.setRequestHeader("Accept", "text/plain");
+					oReq.send();
+					preview = false;
 					break;
 			}
 		}
