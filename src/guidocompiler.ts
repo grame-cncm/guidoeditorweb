@@ -199,35 +199,15 @@ class GuidoCompiler {
 					break;
 				case "s":
 					console.log ("editor s option value " + value );
-
-					// let iframe = <HTMLIFrameElement>document.getElementById("lxmlcom");
-					// iframe.src = "https://libmusicxml.grame.fr/code/?s=" + value;
-					// // iframe.src = "http://localhost:8080/code/?s=" + value;
-					// iframe.onload = () => { 
-					// let content = iframe.contentWindow.document.getElementById("code");
-					// console.log ("editor frame content " + content ); };
-
 					var oReq = new XMLHttpRequest();
-					if (preview) oReq.onload = () => { this.setGmn( oReq.responseText, value); $("#fullscreen").click(); };
-					else 		 oReq.onload = () => { this.setGmn( oReq.responseText, value); };
+					if (preview) oReq.onload = () => { this.setGmn( this.getGmn(oReq.responseText), value); $("#fullscreen").click(); };
+					else 		 oReq.onload = () => { this.setGmn( this.getGmn(oReq.responseText), value); };
 					oReq.open("get", "https://libmusicxml.grame.fr/code/?s=" + value, true);
-					// oReq.withCredentials = true;
 					oReq.setRequestHeader("Access-Control-Allow-Origin", "*");
 					oReq.setRequestHeader("Accept", "text/plain");
-					// oReq.setRequestHeader("Content-Type", "text/plain");
 					oReq.send();
 					preview = false;
 					break;
-
-					// let gmn = localStorage.getItem(value);
-					// if (gmn) {
-					// 	this.setGmn(gmn, "");
-					// }
-					// else {
-					// 	console.log ("Can't retrieve data from session." + value + " '" + gmn + "' :" + Storage.length);
-					// 	alert ("Error:\ncan't retrieve data from session.");
-					// }
-					// break;
 			}
 		}
 		if (preview)
@@ -256,6 +236,15 @@ class GuidoCompiler {
 			}
 		}
 		return result;
+	}
+
+	//------------------------------------------------------------------------
+	// show all pages
+	getGmn (page: string) 	{ 
+		let n1 = page.indexOf ("<body");
+		let bn = page.indexOf (">", n1);
+		let n2 = page.indexOf ("</body>");
+		return page.substring (n1 + bn + 1, n2-1);
 	}
 
 	//------------------------------------------------------------------------
