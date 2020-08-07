@@ -318,7 +318,7 @@ class GuidoCompiler {
 
 	get html () : string { 
 		var str = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8">\n';
-		str += '<link rel="stylesheet" href="http://guidoeditor.grame.fr/font/stylesheet.css" type="text/css" /></head>\n';
+		str += '<link rel="stylesheet" href="http://guidoeditor.grame.fr/font/fonts.css" type="text/css" /></head>\n';
 		str += '<style>\n.page { margin: 20px; padding: 20px; background-color: #efefef;}\n.well { border-radius: 10px; }\n</style>\n'; 
 		str += '<body><div>\n';
 		str +=  $("#score").html();
