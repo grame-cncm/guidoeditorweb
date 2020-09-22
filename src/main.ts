@@ -4,11 +4,15 @@
 ///<reference path="guidosettings.ts"/>
 
 
+var guidoCompiler: GuidoCompiler; 
+var settings: GuidoSettings;
 
 //------------------------------------------------------------------------
-const guidoCompiler = new GuidoCompiler();
-const settings = new GuidoSettings (guidoCompiler);
-guidoCompiler.initialise (settings);
+GuidoModule().then ((module: any) => {
+    guidoCompiler = new GuidoCompiler(module);
+    settings = new GuidoSettings (guidoCompiler);
+    guidoCompiler.initialise (settings);
+})
 
 
 //------------------------------------------------------------------------

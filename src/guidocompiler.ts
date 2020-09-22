@@ -46,8 +46,8 @@ class GuidoCompiler {
 	private fPagesMode = "all";
 
 
-	constructor() {
-		this.fEngine = new GuidoEngine();
+	constructor(module: any) {
+		this.fEngine = new GuidoEngine (module);
 		this.fPRoll  = new GuidoPRoll(this.fEngine);
 		this.fSPR    = new GuidoSPR(this.fEngine);
 
@@ -63,22 +63,21 @@ class GuidoCompiler {
 	//------------------------------------------------------------------------
 	// initialization
 	initialise (settings: Settings) {
-		this.fEngine.initialise().then (() => {
-			var version = this.fEngine.getVersion();
-			console.log( "Guido Engine version " + version.str);
-			$("#version").html (version.str);
-			this.fEngine.start();
-			this.fCurrentSettings = this.fEngine.getDefaultLayoutSettings();
+		var version = this.fEngine.getVersion();
+		console.log( "Guido Engine version " + version.str);
+		$("#version").html (version.str);
+		this.fEngine.start();
+		this.fCurrentSettings = this.fEngine.getDefaultLayoutSettings();
 
-			this.fParser = this.fEngine.openParser();
-			this.fEditor = new GuidoEditor ("code", this);
-			settings.setDefault();
-			this.fColor = settings.color;
-			this.scanOptions();
-			let gmn = localStorage.getItem ("gmn");
-			if (!gmn) gmn = this.fEditor.value;
-			this.process (gmn);
-		});
+		this.fParser = this.fEngine.openParser();
+		this.fEditor = new GuidoEditor ("code", this);
+		settings.setDefault();
+		this.fColor = settings.color;
+		this.scanOptions();
+		let gmn = localStorage.getItem ("gmn");
+		if (!gmn) gmn = this.fEditor.value;
+		else this.fEditor.setGmn (gmn, "");
+		this.process (gmn);
 	}
 	
 	proll() : GuidoPRoll { return this.fPRoll; }
