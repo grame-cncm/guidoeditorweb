@@ -1,6 +1,6 @@
 {
   "name": "guidoeditorweb",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "Guido Editor",
   "main": "index.html",
   "scripts": {
@@ -22,18 +22,18 @@
   },
   "homepage": "https://github.com/grame-cncm/guidoeditorweb#readme",
   "dependencies": {
-    "@grame/guidolib": "^1.6.8-c",
+    "@grame/guidolib": "^1.7.1",
     "@grame/libmusicxml": "^3.19.1",
     "@types/codemirror": "0.0.91",
-    "@types/jquery": "^3.3.38",
-    "@types/node": "^13.13.8",
+    "@types/jquery": "^3.5.1",
+    "@types/node": "^13.13.21",
     "bootstrap": "^3.4.0",
-    "codemirror": "^5.54.0",
+    "codemirror": "^5.58.0",
     "css-loader": "^2.1.1",
     "directory-tree": "^2.2.4",
     "jquery": "^3.5.1",
-    "minify": "^5.1.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "minify": "^5.2.0",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
   }
 }
