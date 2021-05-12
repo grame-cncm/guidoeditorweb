@@ -28,7 +28,7 @@
     "@types/jquery": "^3.5.1",
     "@types/node": "^13.13.21",
     "bootstrap": "^3.4.0",
-    "codemirror": "^5.58.0",
+    "codemirror": "^5.58.2",
     "css-loader": "^2.1.1",
     "directory-tree": "^2.2.4",
     "jquery": "^3.5.1",
