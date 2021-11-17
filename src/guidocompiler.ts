@@ -1,6 +1,6 @@
 
-///<reference path="lib/guidoengine.ts"/>
 ///<reference path="lib/libmusicxml.ts"/>
+///<reference path="guidoengine.ts"/>
 ///<reference path="guidoeditor.ts"/>
 ///<reference path="guidoaltview.ts"/>
 
@@ -44,8 +44,8 @@ class GuidoCompiler {
 	private fPagesMode = "all";
 
 
-	constructor() {
-		this.fEngine = new GuidoEngine();
+	constructor(module: any) {
+		this.fEngine = new GuidoEngine(module);
 		this.fPRoll  = new GuidoPRoll(this.fEngine);
 		this.fSPR    = new GuidoSPR(this.fEngine);
 
@@ -61,7 +61,7 @@ class GuidoCompiler {
 	//------------------------------------------------------------------------
 	// initialization
 	initialise (settings: Settings) {
-		this.fEngine.initialise().then (() => {
+		// this.fEngine.initialise().then (() => {
 			var version = this.fEngine.getVersion();
 			console.log( "Guido Engine version " + version.str);
 			$("#version").html (version.str);
@@ -74,7 +74,7 @@ class GuidoCompiler {
 			this.fColor = settings.color;
 			this.scanUrl();
  			this.process (this.fEditor.value);
-		});
+		// });
 	}
 	
 	proll() : GuidoPRoll { return this.fPRoll; }
