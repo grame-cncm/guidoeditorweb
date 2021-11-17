@@ -32,8 +32,6 @@
     "css-loader": "^6.5.1",
     "directory-tree": "^2.2.4",
     "jquery": ">=3.6.0",
-    "minify": "^8.0.3",
-    "webpack": "^5.64.1",
-    "webpack-cli": "^4.9.1"
+    "minify": "^8.0.3"
   }
 }
