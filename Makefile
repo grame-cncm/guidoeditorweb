@@ -8,9 +8,10 @@ FONTDIR := $(DIST)/font
 CSSDIR  := $(DIST)/css
 TSFOLDER := src
 TSLIB	 := $(TSFOLDER)/lib
-GUIDOTS := guidoengine.ts libGUIDOEngine.d.ts
 LXMLTS  := libmusicxml.ts libmusicxml.d.ts
-TSFILES := $(GUIDOTS:%=$(TSLIB)/%) $(LXMLTS:%=$(TSLIB)/%)
+TSFILES := $(LXMLTS:%=$(TSLIB)/%)
+SRC   := $(wildcard $(TSFOLDER)/*.ts $(TSFOLDER)/*.js)
+
 
 CSS := editor.css settings.css prefs.css
 
@@ -27,7 +28,7 @@ LXMLNODE := node_modules/@grame/libmusicxml
 
 .PHONY: examples
 
-all: $(DIST) $(OUT) $(GUIDOLIB)
+all: $(DIST) $(OUT)
 	$(MAKE) examples
 	$(MAKE) ts
 	$(MAKE) libs
@@ -61,12 +62,10 @@ help:
 ###########################################################################
 ts : $(TSLIB) $(DIST)/guidoeditor.js
 
-$(DIST)/guidoeditor.js : $(TSFILES)
-	cd $(TSFOLDER) && tsc
+$(DIST)/guidoeditor.js : $(TSFILES) $(SRC)
+	cd $(TSFOLDER) && tsc 
 
 tslibs:
-	cp $(GUIDONODE)/libGUIDOEngine.d.ts $(TSLIB)
-	cp $(GUIDONODE)/guidoengine.ts $(TSLIB)
 	cp $(LXMLNODE)/libmusicxml.ts $(TSLIB)
 	cp $(LXMLNODE)/libmusicxml.d.ts $(TSLIB)
 
