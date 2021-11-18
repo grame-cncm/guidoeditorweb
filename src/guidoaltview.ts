@@ -1,5 +1,5 @@
 
-///<reference path="lib/guidoengine.ts"/>
+///<reference path="guidoengine.ts"/>
 
 //----------------------------------------------------------------------------
 // Base class for alternate representations

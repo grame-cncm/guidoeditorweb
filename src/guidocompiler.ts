@@ -1,6 +1,6 @@
 
-///<reference path="lib/guidoengine.ts"/>
 ///<reference path="lib/libmusicxml.ts"/>
+///<reference path="guidoengine.ts"/>
 ///<reference path="guidoeditor.ts"/>
 ///<reference path="guidoaltview.ts"/>
 
@@ -47,7 +47,7 @@ class GuidoCompiler {
 
 
 	constructor(module: any) {
-		this.fEngine = new GuidoEngine (module);
+		this.fEngine = new GuidoEngine(module);
 		this.fPRoll  = new GuidoPRoll(this.fEngine);
 		this.fSPR    = new GuidoSPR(this.fEngine);
 

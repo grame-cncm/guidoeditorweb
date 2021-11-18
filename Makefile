@@ -8,16 +8,15 @@ FONTDIR := $(DIST)/font
 CSSDIR  := $(DIST)/css
 TSFOLDER := src
 TSLIB	 := $(TSFOLDER)/lib
-TSSRC   := $(wildcard $(TSFOLDER)/*.ts)
-GUIDOTS := guidoengine.ts libGUIDOEngine.d.ts
 LXMLTS  := libmusicxml.ts libmusicxml.d.ts
-TSFILES := $(GUIDOTS:%=$(TSLIB)/%) $(LXMLTS:%=$(TSLIB)/%)
+TSFILES := $(LXMLTS:%=$(TSLIB)/%)
+SRC   := $(wildcard $(TSFOLDER)/*.ts $(TSFOLDER)/*.js)
 
-CSS := editor.css settings.css
+
+CSS := editor.css settings.css prefs.css
 
 CMFILES  := $(CM:%=node_modules/codemirror/%)
 CSSFILES := $(CSS:%=css/%)
-EXTFILES := node_modules/jquery/dist/jquery.min.js node_modules/bootstrap/dist/js/bootstrap.min.js # node_modules/codemirror/lib/codemirror.js
 CSSOUT   := guidoeditor.min.css codemirror.min.css bootstrap.min.css
 OUT      := $(CSSOUT:%=$(DIST)/css/%)
 GUIDOLIB := $(DIST)/lib/libGUIDOEngine.js
@@ -27,11 +26,10 @@ LXMLNODE := node_modules/@grame/libmusicxml
 
 .PHONY: examples
 
-all: $(DIST) $(OUT) $(GUIDOLIB)
+all: $(DIST) $(OUT)
 	$(MAKE) examples
-	$(MAKE) tslibs
-	$(MAKE) libs
 	$(MAKE) ts
+	$(MAKE) libs
 	$(MAKE) font
 	$(MAKE) css
 	$(MAKE) minify
@@ -50,7 +48,6 @@ help:
 	@echo "========== Development targets"
 	@echo "  ts           : build the typescript version"
 	@echo "  tslibs       : update $(TSLIB) folder from nodes_modules"
-	@echo "  css          : build minified stylesheets"
 	@echo "  examples     : scan the $(DIST)/examples folder to generate the examples.json file"
 	@echo "========== Deployment targets"
 	@echo "  libs         : update wasm libs in $(DIST)/lib folder from nodes_modules and minify external libs"
@@ -61,23 +58,20 @@ help:
 
 
 ###########################################################################
-ts : $(TSLIB) $(DIST)/guidoeditor.min.js
+ts : $(TSLIB) $(DIST)/guidoeditor.js
 
-$(DIST)/guidoeditor.js : $(TSSRC) $(TSFILES)
-	cd $(TSFOLDER) && tsc
+$(DIST)/guidoeditor.js : $(TSFILES) $(SRC)
+	cd $(TSFOLDER) && tsc 
 
 tslibs:
-	cp $(GUIDONODE)/libGUIDOEngine.d.ts $(TSLIB)
-	cp $(GUIDONODE)/guidoengine.ts $(TSLIB)
 	cp $(LXMLNODE)/libmusicxml.ts $(TSLIB)
 	cp $(LXMLNODE)/libmusicxml.d.ts $(TSLIB)
 
-libs: $(DIST)/lib $(CSSDIR)/codemirror.min.css
+libs: $(DIST)/lib 
 	cp $(GUIDONODE)/libGUIDOEngine.js 	$(DIST)/lib
 	cp $(GUIDONODE)/libGUIDOEngine.wasm $(DIST)/lib
 	cp $(LXMLNODE)/libmusicxml.js 		$(DIST)/lib
 	cp $(LXMLNODE)/libmusicxml.wasm 	$(DIST)/lib
-	cp $(EXTFILES) $(DIST)/lib
 
 $(TSLIB):
 	mkdir $(TSLIB)
@@ -86,7 +80,7 @@ $(DIST)/lib:
 	mkdir $(DIST)/lib
 
 test:
-	@echo $(TSSRC)
+	@echo $(TSFILES)
 
 minify:  $(OUT) $(GUIDOLIB) $(LXMLLIB) $(DIST)/guidoeditor.min.js
 
@@ -95,6 +89,7 @@ font:  $(FONTDIR)
 	
 css: $(CSSDIR)/guidoeditor.min.css $(CSSDIR)/guidoeditor.min.css $(CSSDIR)/codemirror.min.css
 	cp node_modules/bootstrap/dist/css/bootstrap.min.css* $(DIST)/css/ 
+
 
 $(FONTDIR):
 	mkdir $(FONTDIR)
@@ -120,5 +115,6 @@ $(CSSDIR)/guidoeditor.min.css : $(CSSFILES)
 $(CSSDIR)/codemirror.min.css : $(CMFILES)
 	node node_modules/.bin/minify $(CMFILES) > $@ || (rm $@s ; false)
 
+	
 clean :
 	rm $(OUT)
