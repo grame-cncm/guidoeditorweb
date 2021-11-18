@@ -2,22 +2,31 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+
 	<link rel="shortcut icon" type="image/x-icon" href="imgs/favicon.ico" />
 
-	<link rel="stylesheet" href="font/stylesheet.css" type="text/css" />
+	<link rel="stylesheet" href="font/fonts.css" type="text/css" />
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/codemirror.min.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="css/guidoeditor.min.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
 
-	<script src="lib/extern.min.js"></script>
+	<script src="lib/jquery.min.js"></script>
+	<script src="lib/bootstrap.min.js"></script>
+	<script src="lib/codemirror.js"></script>
 
 	<title>Guido Editor</title>
 </head>
 
 <body>
 
-  <div class="modal fade" id="myModal" role="dialog">
+
+	<div class="modal fade" id="preview">
+		<button id="fsclose" style="float: right; z-index: 1000;" type="button" class="close" data-dismiss="modal">&times;</button>
+		<div id="fullscore"></div>
+	  </div>
+	
+	<div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -37,8 +46,7 @@
       </div>
       
     </div>
-  </div>
-
+  	</div>
 
 <div class="grid-container" id="container">
   <div class="header">
@@ -91,7 +99,7 @@
 	</nav>
   </div>
 
-  <div class="gmn well">
+  <div class="left well">
 	  <ul class="nav nav-tabs">
 		<li class="active"><a data-toggle="tab" href="#editor">Editor</a></li>
 		<li><a data-toggle="tab" href="#engine">Engine Settings</a></li>
@@ -105,11 +113,21 @@
  Welcome to the Guido online editor
 *)
 {
+	[
+	\title<"Welcome to the Guido Online Editor">
+	\barFormat<"system">
+	\clef<"g"> \key<1> \meter<"4/4"> g e f d c/1 c d/4 f e g
+],
 [
-	\clef<"g"> \key<1> \meter<"4/4"> g e f d c/1
+	\clef<"f"> \key<1> \meter<"4/4"> c0/1 d/4 f# e g g e f# d c/1
 ]
 }
 			</textarea>
+			<div class="toolbar-left">
+				<span id=gmn-name></span>
+				<button id="fullscreen" type="button" class="btn btn-success" data-toggle="modal" data-target="#preview" style="float: right;">Preview</button> <br />
+				<span id="gmn-error"></span>
+			</div>
 		</div>
 
 
@@ -257,8 +275,8 @@
 		</div>
 
 		<div id="about" class="tab-pane fade about">
-		  <h3>Guido editor version 1.2</h3>
-		  <h4>Guido engine version <span id="version"></span></h4>
+		  <!-- <h3>Guido editor version 1.2</h3> -->
+		  <h3>Guido engine version <span id="version"></span></h3>
 		  <hr />
 		  <p>An online music score editor based on the <a href="https://guidodoc.grame.fr" target=_blank>Guido Music Notation format</a> and on the <a href="https://github.com/grame-cncm/guidolib" target=_blank>Guido engine</a>.</p>
 		  <p>The editor itself is an open source project hosted on <a href="https://github.com/grame-cncm/guidoeditorweb" target=_blank>Github</a>.</p>
@@ -268,10 +286,11 @@
 		  <p>MusicXML import supported using the <a href="https://www.npmjs.com/package/@grame/libmusicxml" target=_blank>libmusicxml</a> version <span id="lxmlversion"></span><br />
 		     and the MusicXML to Guido converter version <span id="xml2guidoversion"></span></p>
 
-		  <p style="float: right"><a href="http://www.grame.fr/" target=_blank>Grame-CNCM <img src="imgs/Logo_Grame_150dpi.png" width=100 /></a></p><br /><br /><br />
+		  <p class ="grame"><a href="http://www.grame.fr/" target=_blank><img alt="Grame" src="imgs/Logo_Grame_150dpi.png" width=100 /></a>
+		  </p>
 		
 		  <hr />
-		  <h4>Timings</h4> <br />
+		  <h4>Timings</h4> (in ms)<br /><br />
 		  <table>
 		  <tr><td class="timings">Time to parse:</td><td  class="timings" id="ptime"></td></tr>
 		  <tr><td class="timings">AR to GR time:</td><td  class="timings" id="agtime"></td></tr>
@@ -284,10 +303,7 @@
 	  </div>
   </div>  
 
-  <div class="rsize" id="rsize">
-  </div>
-
-  <div class="svg well">
+  <div class="right well">
 	  <ul class="nav nav-tabs noprint">
 		<li class="active"><a data-toggle="tab" href="#score">Score</a></li>
 		<li><a data-toggle="tab" href="#proll">Piano Roll</a></li>
@@ -296,29 +312,33 @@
 	  </ul>
 	  <div class="tab-content">
 		<div id="score" class="tab-pane fade in active"> </div>
-		<div id="proll" class="tab-pane fade in pianoroll noprint"> </div>
-		<div id="spr" class="tab-pane fade in pianoroll noprint"> </div>
+		<div id="proll" class="pianoroll tab-pane fade in  noprint"> </div>
+		<div id="spr" class="pianoroll tab-pane fade in  noprint"> </div>
 
 		<div id="prefs" class="tab-pane fade preferences noprint">
 		  <h3>Editor preferences</h3>
 		<table>
 		<tr class="prefs-table"><td>Font Family</td><td>
-		<select class="form-control" id="font-family">
-			<option>Lucida</option>
-			<option>Monaco</option>
-			<option selected>Andale Mono</option>
-			<option>Courier</option>
-			<option>Courier New</option>
-		</select></td></tr>
+			<select class="form-control" id="font-family">
+				<option>Arial</option>
+				<option>Helvetica</option>
+				<option>Baloo</option>
+				<option>Overlock</option>
+				<option>Source Code</option>
+				<option selected>Courier</option>
+				<option>Courier New</option>
+		  </select></td></tr>
 		<tr class="prefs-table"><td>Font Size</td><td>
 		<select class="form-control" id="font-size">
 			<option>10</option>
-			<option>12</option>
-			<option selected>14</option>
+			<option>11</option>
+			<option selected>12</option>
+			<option>13</option>
+			<option>14</option>
 			<option>16</option>
 			<option>18</option>
 			<option>24</option>
-		</select></td></tr>
+	  </select></td></tr>
 		<tr class="prefs-table"><td>Editor Theme</td><td>
 		<select class="form-control" id="etheme">
 			<option>default</option>
@@ -332,7 +352,7 @@
 			<option>duotone-dark</option>
 			<option>duotone-light</option>
 			<option>eclipse</option>
-			<option>elegant</option>
+			<option selected>elegant</option>
 			<option>erlang-dark</option>
 			<option>hopscotch</option>
 			<option>icecoder</option>
@@ -373,8 +393,14 @@
 	  </div>
   </div>
 
-  <div class="footer well"><span class="gmn-name"  id="gmn-name"></span> <span class="gmn-error"  id="gmn-error"></span></div>
+  <!-- <div class="footer well"><span id="gmn-name"></span> <span id="gmn-error"></span></div> -->
+  <div class="footer">
+	<a href="https://guido.grame.fr" target=_blank>Guido Project</a> - Copyright 2020 &copy; 
+	<a href="https://www.grame.fr" target=_blank>Grame-CNCM</a>
 </div>
+
+</div>
+<iframe id="lxmlcom", style="visibility: hidden; width: 0px; height: 0px;"></iframe>
 
 <script src="lib/libGUIDOEngine.js"></script>
 <script src="lib/libmusicxml.js"></script>

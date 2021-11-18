@@ -17,10 +17,8 @@ CSS := editor.css settings.css prefs.css
 
 CMFILES  := $(CM:%=node_modules/codemirror/%)
 CSSFILES := $(CSS:%=css/%)
-EXTFILES := node_modules/jquery/dist/jquery.js node_modules/bootstrap/dist/js/bootstrap.js node_modules/codemirror/lib/codemirror.js
-LIBOUT   := extern.min.js
 CSSOUT   := guidoeditor.min.css codemirror.min.css bootstrap.min.css
-OUT      := $(LIBOUT:%=$(DIST)/lib/%) $(CSSOUT:%=$(DIST)/css/%)
+OUT      := $(CSSOUT:%=$(DIST)/css/%)
 GUIDOLIB := $(DIST)/lib/libGUIDOEngine.js
 LXMLLIB  := $(DIST)/lib/libmusicxml.js
 GUIDONODE:= node_modules/@grame/guidolib
@@ -69,7 +67,7 @@ tslibs:
 	cp $(LXMLNODE)/libmusicxml.ts $(TSLIB)
 	cp $(LXMLNODE)/libmusicxml.d.ts $(TSLIB)
 
-libs: $(DIST)/lib $(DIST)/lib/extern.min.js
+libs: $(DIST)/lib 
 	cp $(GUIDONODE)/libGUIDOEngine.js 	$(DIST)/lib
 	cp $(GUIDONODE)/libGUIDOEngine.wasm $(DIST)/lib
 	cp $(LXMLNODE)/libmusicxml.js 		$(DIST)/lib
@@ -88,7 +86,6 @@ minify:  $(OUT) $(GUIDOLIB) $(LXMLLIB) $(DIST)/guidoeditor.min.js
 
 font:  $(FONTDIR)
 	cp $(GUIDONODE)/guido2-webfont/guido2-webfont.woff* $(FONTDIR)
-	cp $(GUIDONODE)/guido2-webfont/stylesheet.css $(FONTDIR)
 	
 css: $(CSSDIR)/guidoeditor.min.css $(CSSDIR)/guidoeditor.min.css $(CSSDIR)/codemirror.min.css
 	cp node_modules/bootstrap/dist/css/bootstrap.min.css* $(DIST)/css/ 
@@ -109,9 +106,6 @@ examples:
 	cd $(DIST) && node ../scripts/listEx.js
 
 ###########################################################################
-$(DIST)/lib/extern.min.js : $(EXTFILES)
-	node node_modules/.bin/minify $(EXTFILES) > $@ || (rm $@ ; false)
-
 $(DIST)/guidoeditor.min.js : $(DIST)/guidoeditor.js
 	node node_modules/.bin/minify $< > $@ || (rm $@ ; false)
 

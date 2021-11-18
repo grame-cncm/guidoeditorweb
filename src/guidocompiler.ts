@@ -4,6 +4,8 @@
 ///<reference path="guidoeditor.ts"/>
 ///<reference path="guidoaltview.ts"/>
 
+interface UrlOption  { option: string; value: string; }
+
 //----------------------------------------------------------------------------
 // a download function
 //----------------------------------------------------------------------------
@@ -49,7 +51,7 @@ class GuidoCompiler {
 		this.fPRoll  = new GuidoPRoll(this.fEngine);
 		this.fSPR    = new GuidoSPR(this.fEngine);
 
-	$("#savegmn").click			( (event) => { this.saveGMN(); });
+		$("#savegmn").click			( (event) => { this.saveGMN(); });
 		$("#savesvg").click			( (event) => { this.saveSVG(); });
 		$("#savehtml").click		( (event) => { this.saveHTML(); });
 		$("#savesvgproll").click	( (event) => { this.saveSVGPRoll(); });
@@ -61,20 +63,21 @@ class GuidoCompiler {
 	//------------------------------------------------------------------------
 	// initialization
 	initialise (settings: Settings) {
-		// this.fEngine.initialise().then (() => {
-			var version = this.fEngine.getVersion();
-			console.log( "Guido Engine version " + version.str);
-			$("#version").html (version.str);
-			this.fEngine.start();
-			this.fCurrentSettings = this.fEngine.getDefaultLayoutSettings();
+		var version = this.fEngine.getVersion();
+		console.log( "Guido Engine version " + version.str);
+		$("#version").html (version.str);
+		this.fEngine.start();
+		this.fCurrentSettings = this.fEngine.getDefaultLayoutSettings();
 
-			this.fParser = this.fEngine.openParser();
-			this.fEditor = new GuidoEditor ("code", this);
-			settings.setDefault();
-			this.fColor = settings.color;
-			this.scanUrl();
- 			this.process (this.fEditor.value);
-		// });
+		this.fParser = this.fEngine.openParser();
+		this.fEditor = new GuidoEditor ("code", this);
+		settings.setDefault();
+		this.fColor = settings.color;
+		this.scanOptions();
+		let gmn = localStorage.getItem ("gmn");
+		if (!gmn) gmn = this.fEditor.value;
+		else this.fEditor.setGmn (gmn, "");
+		this.process (gmn);
 	}
 	
 	proll() : GuidoPRoll { return this.fPRoll; }
@@ -101,7 +104,6 @@ class GuidoCompiler {
 			embed = false;
 		});
 		this.showTime();
-		this.fEditor.resize ($("#score").height());
 	}
 	
 	displayPages( from: number, to: number ) {
@@ -114,7 +116,6 @@ class GuidoCompiler {
 			this.fDrawTime += this.fEngine.getOnDrawTime(this.fGR);
 		}
 		this.showTime();
-		this.fEditor.resize ($("#score").height());
 	}
 	
 	display() {
@@ -154,6 +155,7 @@ class GuidoCompiler {
 		if (this.fAR) this.fEngine.freeAR (this.fAR);	
 		this.fAR = this.fEngine.string2AR (this.fParser, gmn);
 		if (this.fAR) {
+			localStorage.setItem ("gmn", gmn);
 			this.ar2gr (this.fAR);
 			$("#gmn-error").text ("");
 		}
@@ -170,29 +172,78 @@ class GuidoCompiler {
 		this.fCurrentSettings.optimalPageFill = 0;
 	}
 
-
 	//------------------------------------------------------------------------
-	// scan the current location to detect code of src parameters
-	scanUrl() {
-		var arg = window.location.search.substring(1);
-		var n = arg.search("=");
-		if (n >= 0) { 
-			var name  = arg.substr(0,n);
-			var value = arg.substr(n+1);
-			switch (name) {
+	// scan the current location to detect parameters
+	scanOptions() : void	{
+		let options = this.scanUrl();
+		let preview = false;
+		for (let i=0; (i<options.length) && !preview; i++) {
+			if ((options[i].option == "mode") && (options[i].value == "preview"))
+				preview = true;
+		}
+		for (let i=0; i<options.length; i++) {
+			let option = options[i].option;
+			let value = options[i].value;
+			switch (option) {
 				case "code":
-					this.fEditor.setGmn(atob(value), "");
+					this.setGmn(atob(value), "");
 					break;
 				case "src":
 					var oReq = new XMLHttpRequest();
-					oReq.onload = () => { this.fEditor.setGmn( oReq.responseText, value); };
+					if (preview) oReq.onload = () => { this.setGmn( oReq.responseText, value); $("#fullscreen").click(); };
+					else 		 oReq.onload = () => { this.setGmn( oReq.responseText, value); };
 					oReq.open("get", value, true);
-					oReq.send();					
+					oReq.send();
+					preview = false;
+					break;
+				case "s":
+					let iframe = <HTMLIFrameElement>document.getElementById("lxmlcom");
+					iframe.src = "https://libmusicxml.grame.fr/code/?s=" + value;
+					iframe.onload = () => { 
+						let content = iframe.contentWindow.document.getElementById("code");
+						this.setGmn (content.innerText, "");
+						if (preview) $("#fullscreen").click();
+					};
+					preview = false;
 					break;
 			}
 		}
+		if (preview)
+			$("#fullscreen").click();
 	}
 
+	//------------------------------------------------------------------------
+	// scan the current location to detect parameters
+	scanUrl() : Array<UrlOption>	{
+		let result = new Array<UrlOption>();
+		let arg = window.location.search.substring(1);
+		let n = arg.indexOf("=");
+		while (n > 0) {
+			let option  = arg.substr(0,n);
+			let remain = arg.substr(n+1);
+			let next = remain.indexOf("?");
+			if (next > 0) {
+				let value = remain.substr(0,next);
+				result.push ( {option: option, value: value} );
+				arg = remain.substr(next + 1);
+				n = arg.indexOf("=");
+			}
+			else {
+				result.push ( {option: option, value: remain} );
+				break;
+			}
+		}
+		return result;
+	}
+
+	//------------------------------------------------------------------------
+	// show all pages
+	getGmn (page: string) 	{ 
+		let n1 = page.indexOf ("<pre");
+		let bn = page.indexOf (">", n1);
+		let n2 = page.indexOf ("</pre>");
+		return page.substring (n1 + bn + 1, n2-1);
+	}
 
 	//------------------------------------------------------------------------
 	// show all pages
@@ -266,7 +317,7 @@ class GuidoCompiler {
 
 	get html () : string { 
 		var str = '<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8">\n';
-		str += '<link rel="stylesheet" href="http://guidoeditor.grame.fr/font/stylesheet.css" type="text/css" /></head>\n';
+		str += '<link rel="stylesheet" href="http://guidoeditor.grame.fr/font/fonts.css" type="text/css" /></head>\n';
 		str += '<style>\n.page { margin: 20px; padding: 20px; background-color: #efefef;}\n.well { border-radius: 10px; }\n</style>\n'; 
 		str += '<body><div>\n';
 		str +=  $("#score").html();

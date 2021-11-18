@@ -1,29 +1,6 @@
 
 ///<reference path="guidocompiler.ts"/>
 
-// interface rgbColor { r: number, g: number, b: number; }
-
-// interface ReduceProp {
-// 	showColors( status: boolean ) : void;
-// 	hideLines ( status: boolean ) : void;
-// 	showBars  ( status: boolean ) : void;
-// }
-// interface PRoll extends ReduceProp {
-// 	showKbd ( status: boolean ) : void;
-// }
-
-
-// interface Compiler { 
-// 	refresh () : void ;
-// 	setDefaultSettings() : void;
-// 	showAll() : void;
-// 	showPages (pages: Array<number>) : void;
-// 	showLast(): void;
-// 	showElement(elt: number, status: boolean) : void;
-// 	settings : GuidoLayoutSettings;
-// 	color: rgbColor;
-// }
-
 //----------------------------------------------------------------------------
 // the guido engine settings managament
 //----------------------------------------------------------------------------

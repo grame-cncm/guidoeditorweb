@@ -1,0 +1,13 @@
+(*
+ Welcome to the Guido online editor
+*)
+{
+	[
+	\title<"Welcome to the Guido Online Editor">
+	\barFormat<"system">
+	\clef<"g"> \key<1> \meter<"4/4"> g e f d c/1 c d/4 f e g
+],
+[
+	\clef<"f"> \key<1> \meter<"4/4"> c0/1 d/4 f# e g g e f# d c/1
+]
+}

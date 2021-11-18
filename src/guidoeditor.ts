@@ -1,6 +1,7 @@
 
 
 interface Compiler { process (gmn: string) : void }
+interface KeyHandler { (event: KeyboardEvent) : void }
 
 //----------------------------------------------------------------------------
 // this is the editor part, currently using CodeMirror
@@ -8,6 +9,7 @@ interface Compiler { process (gmn: string) : void }
 class GuidoEditor {
 
 	private fEditor: CodeMirror.EditorFromTextArea;
+	private fKeyHandler : KeyHandler;
 
 	constructor (divID: string, compiler: GuidoCompiler) {
 		this.fEditor = CodeMirror.fromTextArea (<HTMLTextAreaElement>document.getElementById (divID), {
@@ -51,16 +53,44 @@ class GuidoEditor {
 		this.fEditor.setOption("theme", <string>$("#etheme").val());
 		this.fEditor.setOption("lineWrapping",  <boolean>$("#wraplines").is(":checked"));
 
+		$("#fullscreen").click		( (event) => { this.loadPreview() }); 
+		this.fKeyHandler = this.closePreview;
+	}
+
+	closePreview(event: KeyboardEvent) {
+		if (event.key == 'Escape') {
+			$("#fsclose").click();
+			window.removeEventListener("keydown", this.fKeyHandler, {capture: true});
+		}
 	}
 	
+	loadPreview() {
+		let score = document.getElementById("score");
+		if (score.innerHTML) {
+			let div = document.getElementById("preview");
+			let fullscore = document.getElementById("fullscore");
+			fullscore.innerHTML = score.innerHTML;
+			div.style.visibility = "visible";
+			window.addEventListener ("keydown", this.fKeyHandler, {capture: true});
+		}
+		else window.setTimeout( () : void => { this.loadPreview()}, 50);
+	}
+
 	setGmn( gmn: string, path: string): void {
-		$("#gmn-name").text (path);
+		let displayName = path;
+		let rem = path.length - 89;
+		if (rem > 3) {
+			let offset = 10;
+			displayName = path.substr(0, (path.length - rem)/2 - offset) + "..." + path.substr((path.length + rem)/2 - offset);
+		}
+
+		$("#gmn-name").text (displayName);
 		var ext = path.substr(path.lastIndexOf('.') + 1).toLowerCase();
 		if ((ext === "xml") ||  (ext === "musicxml")) {
 			gmn = lxml.string2guido (gmn, true);
 		}
 		this.fEditor.setValue(gmn);
-		this.fEditor.refresh();
+		// this.fEditor.refresh();
 	} 
 
 	drop (file: File) {
@@ -70,7 +100,6 @@ class GuidoEditor {
 	}
 	
 	select(line: number, col: number) 	{ this.fEditor.setSelection( {line: line, ch: col-1}, {line: line, ch: col} ) };
-	resize(h: number) 			{ $("div.CodeMirror").css("height", h) };
 	get value(): string 		{ return this.fEditor.getValue(); }
 }
 

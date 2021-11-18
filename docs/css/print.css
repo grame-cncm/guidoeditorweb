@@ -1,9 +1,8 @@
 
-/* @media only print { */
+@media only print {
 	.header 	{ display: none; }
-	.gmn 		{ display: none; }
-	.rsize 		{ display: none; }
-	.svg 		{ display: block; border: 0px}
+	.left 		{ display: none; }
+	.right 		{ display: block; border: 0px}
 	.footer 	{ display: none; }
 
 	.noprint	{ display: none;  }
@@ -14,4 +13,4 @@
 
 	html, body 		{ margin: 0px; }
 	.grid-container {  display: block; border: 0px; }
-/* } */
+}

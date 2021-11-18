@@ -27,3 +27,19 @@ function xmlversion (lxml: libMusicXMLAdapter) : void {
 const lxml = new libmusicxml();
 lxml.initialise ().then ( xmlversion );
 
+window.addEventListener('message', event => {
+console.log ("message received from " + event.origin);
+	// IMPORTANT: check the origin of the data! 
+    if (event.origin.startsWith('https://libmusicxml.grame.fr')) { 
+        // The data was sent from your site.
+        // Data sent with postMessage is stored in event.data:
+        console.log(event.data); 
+    } else {
+        // The data was NOT sent from your site! 
+        // Be careful! Do not use it. This else branch is
+        // here just for clarity, you usually shouldn't need it.
+        return; 
+    } 
+});
+
+document.domain = "grame.fr";
