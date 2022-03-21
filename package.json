@@ -1,6 +1,6 @@
 {
   "name": "guidoeditorweb",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "Guido Editor",
   "main": "index.html",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/grame-cncm/guidoeditorweb#readme",
   "dependencies": {
-    "@grame/guidolib": "^1.7.21",
+    "@grame/guidolib": "^1.7.3",
     "@grame/libmusicxml": "^3.19.1",
     "@types/codemirror": "5.60.5",
     "@types/jquery": "^3.5.10",
