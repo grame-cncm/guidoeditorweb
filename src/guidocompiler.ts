@@ -1,5 +1,5 @@
 
-///<reference path="lib/libmusicxml.ts"/>
+///<reference types="@grame/libmusicxml"/>
 ///<reference path="guidoengine.ts"/>
 ///<reference path="guidoeditor.ts"/>
 ///<reference path="guidoaltview.ts"/>
@@ -32,7 +32,7 @@ interface Settings {
 class GuidoCompiler {
 
 	private fEngine 	: GuidoEngine = null;
-	private fMusicxml 	: libmusicxml = null;
+	private fMusicxml 	: libMusicXMLAdapter = null;
 	private fParser : GuidoParser = null;
 	private fAR 	: ARHandler = null;
 	private fGR 	: GRHandler = null;
