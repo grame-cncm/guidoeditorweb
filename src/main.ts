@@ -1,11 +1,12 @@
 
-///<reference path="lib/libmusicxml.ts"/>
+///<reference types="@grame/libmusicxml"/>
 ///<reference path="guidocompiler.ts"/>
 ///<reference path="guidosettings.ts"/>
 
 
 var guidoCompiler : GuidoCompiler;
 var settings : GuidoSettings;
+var lxml: libMusicXMLAdapter;
 
 //------------------------------------------------------------------------
 GuidoModule().then ( (module: any) => {
@@ -14,18 +15,19 @@ GuidoModule().then ( (module: any) => {
 	guidoCompiler.initialise (settings);
 });
 
-
+MusicXMLModule().then (( module: any) => {
+    lxml = new module.libMusicXMLAdapter();
+    xmlversion(lxml);
+});
 
 
 //------------------------------------------------------------------------
 function xmlversion (lxml: libMusicXMLAdapter) : void {
-	console.log( "LibMusicXML version " + lxml.libVersionStr());
+	console.log( "LibMusicXML version ", lxml.libVersionStr());
 	$("#lxmlversion").html (lxml.libVersionStr());
 	console.log( "MusicXML to GMN converter version " + lxml.musicxml2guidoVersionStr());
 	$("#xml2guidoversion").html (lxml.musicxml2guidoVersionStr());
 }
-const lxml = new libmusicxml();
-lxml.initialise ().then ( xmlversion );
 
 window.addEventListener('message', event => {
 console.log ("message received from " + event.origin);

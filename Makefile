@@ -7,9 +7,7 @@ DIST := docs
 FONTDIR := $(DIST)/font
 CSSDIR  := $(DIST)/css
 TSFOLDER := src
-TSLIB	 := $(TSFOLDER)/lib
 LXMLTS  := libmusicxml.ts libmusicxml.d.ts
-TSFILES := $(LXMLTS:%=$(TSLIB)/%)
 SRC   := $(wildcard $(TSFOLDER)/*.ts $(TSFOLDER)/*.js)
 
 
@@ -47,7 +45,6 @@ help:
 	@echo "  clean        : remove the minified files"
 	@echo "========== Development targets"
 	@echo "  ts           : build the typescript version"
-	@echo "  tslibs       : update $(TSLIB) folder from nodes_modules"
 	@echo "  examples     : scan the $(DIST)/examples folder to generate the examples.json file"
 	@echo "========== Deployment targets"
 	@echo "  libs         : update wasm libs in $(DIST)/lib folder from nodes_modules and minify external libs"
@@ -58,14 +55,10 @@ help:
 
 
 ###########################################################################
-ts : $(TSLIB) $(DIST)/guidoeditor.js
+ts : $(DIST)/guidoeditor.js
 
-$(DIST)/guidoeditor.js : $(TSFILES) $(SRC)
+$(DIST)/guidoeditor.js : $(SRC)
 	cd $(TSFOLDER) && tsc 
-
-tslibs:
-	cp $(LXMLNODE)/libmusicxml.ts $(TSLIB)
-	cp $(LXMLNODE)/libmusicxml.d.ts $(TSLIB)
 
 libs: $(DIST)/lib 
 	cp $(GUIDONODE)/libGUIDOEngine.js 	$(DIST)/lib
