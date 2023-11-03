@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/grame-cncm/guidoeditorweb#readme",
   "dependencies": {
-    "@grame/guidolib": "^1.7.6",
+    "@grame/guidolib": "^1.7.7",
     "@grame/libmusicxml": "^3.22.0",
     "@types/codemirror": "5.60.5",
     "@types/jquery": "^3.5.10",
